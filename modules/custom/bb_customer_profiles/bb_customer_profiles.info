@@ -1,0 +1,15 @@
+name = bb_customer_profiles
+description = the commerce customer profiles, and associated fields.
+core = 7.x
+package = Features
+version = 7.x-0.1
+project = bb_customer_profiles
+commerce_customer_type[] = billing
+commerce_customer_type[] = shipping
+features[features_api][] = api:2
+features_api[] = api:2
+field_base[] = commerce_customer_address
+field_base[] = field_order_count
+field_instance[] = commerce_customer_profile-billing-commerce_customer_address
+field_instance[] = commerce_customer_profile-billing-field_order_count
+field_instance[] = commerce_customer_profile-shipping-commerce_customer_address
