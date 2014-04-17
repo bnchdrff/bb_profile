@@ -5,3 +5,14 @@
  */
 
 include_once 'bb_misc.features.inc';
+
+function bb_misc_commerce_payment_order_paid_in_full($order, $transaction) {
+  dpm($order, 'paid in full order:');
+  // this is untested.
+  $uid = $order->uid;
+  $profiles = commerce_customer_profile_load_multiple(array(), array('uid' => $uid), TRUE);
+  foreach ($profiles as $profile) {
+    // Save the customer profile type: billing info. 
+    commerce_customer_profile_save($profile);
+  }
+}
