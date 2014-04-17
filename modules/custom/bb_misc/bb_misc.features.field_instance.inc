@@ -75,6 +75,37 @@ function bb_misc_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'commerce_customer_profile-billing-field_order_count'
+  $field_instances['commerce_customer_profile-billing-field_order_count'] = array(
+    'bundle' => 'billing',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_plain',
+        'weight' => -9,
+      ),
+    ),
+    'entity_type' => 'commerce_customer_profile',
+    'fences_wrapper' => '',
+    'field_name' => 'field_order_count',
+    'label' => 'Total products ordered',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'computed_field',
+      'settings' => array(),
+      'type' => 'computed',
+      'weight' => -9,
+    ),
+  );
+
   // Exported field_instance: 'commerce_customer_profile-shipping-commerce_customer_address'
   $field_instances['commerce_customer_profile-shipping-commerce_customer_address'] = array(
     'bundle' => 'shipping',
@@ -699,6 +730,7 @@ function bb_misc_field_default_field_instances() {
   t('Prices');
   t('Product');
   t('Title');
+  t('Total products ordered');
 
   return $field_instances;
 }
