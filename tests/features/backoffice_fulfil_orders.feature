@@ -21,7 +21,7 @@ Feature: Fulfil Orders
       | 5   | pending    | Tomas    |
 
   Scenario: View
-    When I visit the /admin/orders/fulfil_international page,
+    When I visit the /admin/commerce/orders/fulfill_international
     I should see a table with 10 orders,
     and each row should have a Quick Edit" link and a checkbox,
     and when I check 3 of the orders and select the "Set Order Status : Completed" option from the "Bulk Operations" dropdown and press "Apply",
