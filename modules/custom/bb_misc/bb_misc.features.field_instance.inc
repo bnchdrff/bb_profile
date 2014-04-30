@@ -172,6 +172,41 @@ function bb_misc_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'commerce_customer_profile-shipping-field_special_instructions'
+  $field_instances['commerce_customer_profile-shipping-field_special_instructions'] = array(
+    'bundle' => 'shipping',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => -9,
+      ),
+    ),
+    'entity_type' => 'commerce_customer_profile',
+    'fences_wrapper' => '',
+    'field_name' => 'field_special_instructions',
+    'label' => 'Special Instructions',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => -9,
+    ),
+  );
+
   // Exported field_instance: 'commerce_order-commerce_order-field_customs_id'
   $field_instances['commerce_order-commerce_order-field_customs_id'] = array(
     'bundle' => 'commerce_order',
@@ -211,6 +246,54 @@ function bb_misc_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => -1,
+    ),
+  );
+
+  // Exported field_instance: 'commerce_order-commerce_order-field_shipped_date'
+  $field_instances['commerce_order-commerce_order-field_shipped_date'] = array(
+    'bundle' => 'commerce_order',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+        ),
+        'type' => 'date_default',
+        'weight' => -1,
+      ),
+    ),
+    'entity_type' => 'commerce_order',
+    'fences_wrapper' => '',
+    'field_name' => 'field_shipped_date',
+    'label' => 'Shipped',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'same',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'm/d/Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_text',
+      'weight' => 0,
     ),
   );
 
@@ -811,6 +894,8 @@ function bb_misc_field_default_field_instances() {
   t('Price');
   t('Prices');
   t('Product');
+  t('Shipped');
+  t('Special Instructions');
   t('Title');
   t('Total Orders');
 

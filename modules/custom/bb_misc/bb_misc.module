@@ -55,10 +55,14 @@ function bb_misc_field_access($op, $field, $entity_type, $entity, $account) {
  */
 function bb_misc_entity_presave($entity, $type) {
   if ($type == 'commerce_order' && arg(3) == 'fulfil_international') {
-    if (is_array($entity->field_customs_id) && !empty(trim($entity->field_customs_id['und'][0]['value']))) {
+    if (is_array($entity->field_customs_id) && !empty($entity->field_customs_id['und']) && !empty(trim($entity->field_customs_id['und'][0]['value']))) {
       $entity->status = 'completed';
+      if (empty($entity->field_shipped_date)) {
+        $entity->field_shipped_date['und'][0]['value'] = date("Y-m-d H:i:s");
+      }
     } else {
       $entity->status = 'processing';
+      unset($entity->field_shipped_date['und']);
     }
   }
 }
