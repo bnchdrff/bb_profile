@@ -116,6 +116,9 @@ projects[commerce_stripe][download][branch] = "7.x-1.x"
 projects[commerce_price_table][version] = 1.0
 projects[computed_field][subdir] = "contrib"
 
+projects[context][subdir] = "contrib"
+projects[context][version] = 3.2
+
 ; Other contribs.
 projects[bean][version] = 1.7
 projects[bean][subdir] = "contrib"
