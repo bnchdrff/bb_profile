@@ -176,6 +176,9 @@ function bb_misc_commerce_tax_default_types() {
  * Implements hook_ctools_plugin_api().
  */
 function bb_misc_ctools_plugin_api($module = NULL, $api = NULL) {
+  if ($module == "boxes" && $api == "box") {
+    return array("version" => "1");
+  }
   if ($module == "context" && $api == "context") {
     return array("version" => "3");
   }
