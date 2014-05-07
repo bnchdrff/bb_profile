@@ -600,11 +600,10 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['fields']['field_customs_id_editable']['widget_type'] = 'text_textfield';
   $handler->display->display_options['fields']['field_customs_id_editable']['suppress_label'] = 1;
   $handler->display->display_options['fields']['field_customs_id_editable']['suppress_description'] = 0;
-  /* Field: Commerce Customer profile: Special Instructions */
+  /* Field: Commerce Order: Special Instructions */
   $handler->display->display_options['fields']['field_special_instructions']['id'] = 'field_special_instructions';
   $handler->display->display_options['fields']['field_special_instructions']['table'] = 'field_data_field_special_instructions';
   $handler->display->display_options['fields']['field_special_instructions']['field'] = 'field_special_instructions';
-  $handler->display->display_options['fields']['field_special_instructions']['relationship'] = 'commerce_customer_shipping_profile_id';
   $handler->display->display_options['fields']['field_special_instructions']['element_type'] = '0';
   $handler->display->display_options['fields']['field_special_instructions']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_special_instructions']['element_wrapper_type'] = '0';
