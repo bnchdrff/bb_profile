@@ -101,20 +101,26 @@ projects[commerce_yotpo][subdir] = "contrib"
 projects[commerce_yotpo][version] = 1.0
 projects[commerce_firstdata_gge4][version] = 1.0
 projects[commerce_firstdata_gge4][subdir] = "contrib"
-
 projects[commerce_express_checkout][download][type] = "git"
 projects[commerce_express_checkout][download][url] = "https://github.com/bnchdrff/commerce_express_checkout.git"
 projects[commerce_express_checkout][download][branch] = "7.x-1.x-quantity"
-
 projects[commerce_price_table][version] = 1.1
 projects[commerce_price_table][subdir] = "contrib"
-
 projects[commerce_stripe][download][type] = "git"
 projects[commerce_stripe][download][url] = "git://git.drupal.org/project/commerce_stripe.git"
 projects[commerce_stripe][download][branch] = "7.x-1.x"
-
 projects[commerce_price_table][version] = 1.0
 projects[computed_field][subdir] = "contrib"
+
+; Custom modules & features
+projects[bb_config][download][type] = ""
+projects[bb_config][download][url] = ""
+projects[bb_config][type] = "module"
+projects[bb_config][version] = "0.1"
+projects[bb_misc][download][type] = ""
+projects[bb_misc][download][url] = ""
+projects[bb_misc][type] = "module"
+projects[bb_misc][version] = "0.1"
 
 ; Other contribs.
 projects[bean][version] = 1.7
@@ -182,6 +188,11 @@ projects[title][subdir] = "contrib"
 projects[title][patch][] = "http://drupal.org/files/title-translation_overwrite-1269076-35.patch"
 projects[kameleoon][subdir] = "contrib"
 projects[kameleoon][version] = "1.0"
+projects[sendgrid_integration][type] = "module"
+projects[sendgrid_integration][download][type] = "git"
+projects[sendgrid_integration][download][url] = "git://git.drupal.org/project/sendgrid_integration.git"
+projects[sendgrid_integration][download][branch] = "7.x-1.x"
+projects[sendgrid_integration][download][revision] = "281c69a9140ff21674e0914e7121bdc030c507cc"
 
 ; Search related modules.
 projects[search_api][version] = 1.11
