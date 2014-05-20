@@ -1,0 +1,15 @@
+name = Beard Balm - Commerce Migrate PayPal Orders
+description = Migrates PayPal orders into Beard Balms commerce site.
+core = 7.x
+package = Commerce (contrib)
+dependencies[] = migrate
+dependencies[] = migrate_ui
+dependencies[] = commerce_migrate
+dependencies[] = commerce_product
+dependencies[] = commerce_product_ui
+dependencies[] = commerce_customer
+dependencies[] = commerce_line_item
+
+; Migrations
+files[] = migrate_bb_paypal.migrate.inc
+files[] = paypalorder.inc
