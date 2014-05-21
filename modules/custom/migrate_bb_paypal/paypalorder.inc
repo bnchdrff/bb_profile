@@ -6,7 +6,7 @@
  */
 
 class PayPalOrdersMigration extends Migration {
-  public function __construct($arguments) {
+  public function __construct($arguments = array()) {
     parent::__construct($arguments);
 
     $this->description = t('Import PayPal Orders from CSV.');
@@ -22,35 +22,42 @@ class PayPalOrdersMigration extends Migration {
       ),
       MigrateDestinationEntityAPI::getKeySchema('commerce_order', 'commerce_order')
     );
-    $this->source = new MigrateSourceCSV(drupal_get_path('module', 'migrate_bb_paypal') . '/paypal_bb_test.csv', $this->csvcols(), array('header_rows'=>1,'embedded_newlines'=>FALSE));
+    // using sheet1 from the "2012-2/6/2014" doc to test.
+    $this->source = new MigrateSourceCSV(drupal_get_path('module', 'migrate_bb_paypal') . '/paypal_bb_test.csv', array(), array('header_rows'=>1,'embedded_newlines'=>FALSE));
     $this->destination = new MigrateDestinationEntityAPI('commerce_order', 'commerce_order');
 
-    $this->addFieldMapping('status', 'status');
-  }
-  protected function csvcols() {
-    $cols[0] = array('date', 'Date');
-    $cols[1] = array('time', 'Time');
-    $cols[0] = array('timezone', 'Time Zone');
-    $cols[1] = array('Name', 'Name');
-    $cols[0] = array('type', 'Payment type');
-    $cols[0] = array('status', 'Status');
-    $cols[0] = array('gross', 'Gross');
-    $cols[0] = array('fee', 'Fee');
-    $cols[0] = array('net', 'Net');
-    $cols[0] = array('from_email', 'From Email Address');
-    $cols[0] = array('transaction_id', 'Transaction ID');
-    $cols[0] = array('counterparty_status', 'Counterparty Status');
-    $cols[0] = array('address_status', 'Address Status');
-    $cols[0] = array('item_title', 'Item Title');
-    $cols[0] = array('shipping_handling', 'Shipping and Handling Amount');
-    $cols[0] = array('receipt_id', 'Receipt ID');
-    $cols[0] = array('balance', 'Balance');
-    $cols[0] = array('address_1', 'Address Line 1');
-    $cols[0] = array('address_2', 'Address Line 2/District/Neighborhood');
-    $cols[0] = array('town_city', 'Town/City');
-    $cols[0] = array('state', 'State/Province/Region/County/Territory/Prefecture/Republic');
-    $cols[0] = array('zip_postal_code', 'Zip/Postal Code');
-    $cols[0] = array('country', 'Country');
-    return $cols;
+    $this->addFieldMapping('order_number', null);
+    $this->addFieldMapping('status', 'Status'); // Need to convert these values?
+    $this->addFieldMapping('created', 'Date'); // use full date & time & tz
+    $this->addFieldMapping('field_shipped_date', 'Date'); // use full date & time & tz
+    $this->addFieldMapping('field_shipped_date:timezone', 'Time Zone'); // use full date & time & tz
+    $this->addFieldMapping('mail', 'From Email Address');
+    $this->addFieldMapping('commerce_order_total', 'Gross');
+    $this->addFieldMapping('commerce_order_total:currency_code', null)->defaultValue('USD'); // unsure
+    $this->addFieldMapping('field_paypal_transaction_id', 'Transaction ID');
+    $this->addFieldMapping('uid', null)->defaultValue(1);
+    $this->addFieldMapping('type', null)->defaultValue('commerce_order');
+    $this->addFieldMapping('owner', 'name')->defaultValue('admin');
+    $this->addUnmigratedDestinations(array(
+      'changed',
+      'hostname',
+      'path',
+      'commerce_discounts',
+      'field_special_instructions',
+      'field_special_instructions:language',
+      'field_paypal_transaction_id:language',
+      'field_gift_order',
+      'field_total_orders',
+      'field_shipped_date:rrule',
+      'field_shipped_date:to',
+      'field_customs_id',
+      'field_customs_id:language',
+    ));
+    $this->addUnmigratedSources(array(
+      'Balance',
+      'Counterparty Status',
+      'Item Title',
+      'Type',
+    ));
   }
 }
