@@ -11,14 +11,22 @@ function migrate_bb_paypal_migrate_api() {
   $api = array(
     'api' => 2,
     'groups' => array(
-      'paypalorders' => array(
+      'paypal' => array(
         'title' => t('PayPal Orders'),
       ),
     ),
     'migrations' => array(
+      'PayPalOrdersUsers' => array(
+        'class_name' => 'PayPalOrdersUsersMigration',
+        'group_name' => 'paypal',
+      ),
       'PayPalOrders' => array(
         'class_name' => 'PayPalOrdersMigration',
-        'group_name' => 'paypalorders',
+        'group_name' => 'paypal',
+      ),
+      'PayPalOrdersCustomerProfilesBilling' => array(
+        'class_name' => 'PayPalOrdersCustomerProfilesBillingMigration',
+        'group_name' => 'paypal',
       ),
     ),
   );
