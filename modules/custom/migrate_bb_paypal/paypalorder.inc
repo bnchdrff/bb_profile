@@ -146,7 +146,7 @@ class PayPalOrdersMigration extends PayPalBaseMigration {
     parent::__construct($arguments);
 
     $this->description = t('Import PayPal Orders from CSV.');
-    $this->dependencies = array('PayPalOrdersUsers');
+    $this->dependencies = array('PayPalOrdersCustomerProfilesBilling');
     // Create a map object for tracking the relationships between source rows
     $this->map = new MigrateSQLMap($this->machineName,
       array(
@@ -161,10 +161,13 @@ class PayPalOrdersMigration extends PayPalBaseMigration {
     );
     $this->destination = new MigrateDestinationEntityAPI('commerce_order', 'commerce_order');
 
-    $this->addFieldMapping('uid', 'Transaction ID')->sourceMigration('PayPalOrdersUsers')->description(t('The orders migration follows the order Users migration.')); // based on the order users migration
+    $this->addFieldMapping('uid', 'Transaction ID')->sourceMigration('PayPalOrdersUsers')->description(t('the orders migration follows the order users migration.')); // based on the order users migration
     $this->addFieldMapping('owner', 'owner_name');
     $this->addFieldMapping('field_paypal_transaction_id', 'Transaction ID');
     $this->addFieldMapping('order_number', null);
+
+    $this->addFieldMapping('commerce_customer_billing', 'Transaction ID')->sourceMigration('PayPalOrdersCustomerProfilesBilling')->description(t('This customer profile is associated with this order.'));
+
     $this->addFieldMapping('status', 'Status'); // Need to convert these values?
     $this->addFieldMapping('created', 'Date'); // use full date & time & tz
     $this->addFieldMapping('field_shipped_date', 'Date'); // use full date & time & tz
@@ -256,7 +259,7 @@ class PayPalOrdersCustomerProfilesBillingMigration extends PayPalBaseMigration {
     $this->addFieldMapping('commerce_customer_address:name_line', 'Name'); // full name?
     $this->addUnmigratedDestinations(array(
       'changed',
-      'commerce_customer_address', // need this or just it's parts?
+      'commerce_customer_address', // prepare() handles this jazz.
       'commerce_customer_address:sub_administrative_area',
       'commerce_customer_address:dependent_locality',
       'commerce_customer_address:sub_premise',
@@ -288,6 +291,7 @@ class PayPalOrdersCustomerProfilesBillingMigration extends PayPalBaseMigration {
     ));
   }
   public function prepareRow($row) {
+    // TODO: try to find an existing customer profile based on the address??
     if ($this->skipRow($row)) {
       return FALSE;
     }
