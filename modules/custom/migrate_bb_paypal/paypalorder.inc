@@ -1,11 +1,31 @@
 <?php
 
+// Common to all PayPal csv to Drupal entity migrations.
+abstract class PayPalBaseMigration extends Migration {
+  // A Migration constructor takes an array of arguments as its first parameter.
+  // The arguments must be passed through to the parent constructor.
+  public function __construct($arguments) {
+    parent::__construct($arguments);
+
+    // using sheet1 from the "2012-2/6/2014" doc to test.
+    $this->source = new MigrateSourceCSV(drupal_get_path('module', 'migrate_bb_paypal') . '/paypal_bb_test.csv', array(), array('header_rows'=>1,'embedded_newlines'=>FALSE));
+  }
+
+  public function skipRow($row) {
+    // Skip bank account withdraws.
+    if ($row->{'Type'} == 'Withdraw Funds to a Bank Account') {
+      return TRUE;
+    }
+    return FALSE;
+  }
+}
+
 /**
  * @file
  *   PayPal Orders migration.
  */
 
-class PayPalOrdersUsersMigration extends Migration {
+class PayPalOrdersUsersMigration extends PayPalBaseMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -22,8 +42,6 @@ class PayPalOrdersUsersMigration extends Migration {
       ),
       MigrateDestinationUser::getKeySchema()
     );
-    // using sheet1 from the "2012-2/6/2014" doc to test.
-    $this->source = new MigrateSourceCSV(drupal_get_path('module', 'migrate_bb_paypal') . '/paypal_bb_test.csv', array(), array('header_rows'=>1,'embedded_newlines'=>FALSE));
     $this->destination = new MigrateDestinationUser();
 
     $this->addFieldMapping('mail', 'From Email Address');
@@ -73,6 +91,9 @@ class PayPalOrdersUsersMigration extends Migration {
    * @return bool
    */
   public function prepareRow($row) {
+    if ($this->skipRow($row)) {
+      return FALSE;
+    }
 
     // On initial import, if this email address already exists, just map to the
     // existing uid and don't allow it to be deleted. When updating, we can
@@ -102,7 +123,7 @@ class PayPalOrdersUsersMigration extends Migration {
 }
 
 
-class PayPalOrdersMigration extends Migration {
+class PayPalOrdersMigration extends PayPalBaseMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -120,8 +141,6 @@ class PayPalOrdersMigration extends Migration {
       ),
       MigrateDestinationEntityAPI::getKeySchema('commerce_order', 'commerce_order')
     );
-    // using sheet1 from the "2012-2/6/2014" doc to test.
-    $this->source = new MigrateSourceCSV(drupal_get_path('module', 'migrate_bb_paypal') . '/paypal_bb_test.csv', array(), array('header_rows'=>1,'embedded_newlines'=>FALSE));
     $this->destination = new MigrateDestinationEntityAPI('commerce_order', 'commerce_order');
 
     $this->addFieldMapping('uid', 'Transaction ID')->sourceMigration('PayPalOrdersUsers')->description(t('The orders migration follows the order Users migration.')); // based on the order users migration
@@ -168,6 +187,9 @@ class PayPalOrdersMigration extends Migration {
    * @return bool
    */
   public function prepareRow($row) {
+    if ($this->skipRow($row)) {
+      return FALSE;
+    }
 
 dpm($row, 'orders prepareRow row!');
   
@@ -181,7 +203,7 @@ dpm($row, 'orders prepareRow row!');
 
 }
 
-class PayPalOrdersCustomerProfilesBillingMigration extends Migration {
+class PayPalOrdersCustomerProfilesBillingMigration extends PayPalBaseMigration {
   public function __construct(array $arguments) {
     parent::__construct($arguments);
 
@@ -199,8 +221,6 @@ class PayPalOrdersCustomerProfilesBillingMigration extends Migration {
       ),
       MigrateDestinationEntityAPI::getKeySchema('commerce_customer_profile', 'billing')
     );
-    // using sheet1 from the "2012-2/6/2014" doc to test.
-    $this->source = new MigrateSourceCSV(drupal_get_path('module', 'migrate_bb_paypal') . '/paypal_bb_test.csv', array(), array('header_rows'=>1,'embedded_newlines'=>FALSE));
     $this->destination = new MigrateDestinationEntityAPI('commerce_customer_profile', 'billing');
     $this->addFieldMapping('uid', 'Transaction ID')->sourceMigration('PayPalOrdersUsers')->description(t('The assignment of customer profile address for orders.'));;
     $this->addFieldMapping('commerce_customer_address:postal_code', 'Zip/Postal Code');
@@ -238,6 +258,11 @@ class PayPalOrdersCustomerProfilesBillingMigration extends Migration {
       'Item Title',
       'Type',
     ));
-    */
+  }
+  public function prepare($profile, stdClass $row) {
+    if ($this->skipRow($row)) {
+      return FALSE;
+    }
+    dpm(get_defined_vars(), 'profile prepare');
   }
 }
