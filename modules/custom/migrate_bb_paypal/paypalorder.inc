@@ -29,7 +29,11 @@ abstract class PayPalBaseMigration extends Migration {
     if ($existing_user->uid) {
       $row->uid = $existing_user->uid;
     }
+
     $row->{'Country'} = _convert_country_name_to_country_code($row->{'Country'}); // TODO: make noise if this doesn't find a country.
+
+    // Covert row date to timestamp.
+    $row->{'Date'} = strtotime($row->{'Date'} . ' ' . $row->{'Time'} . ' ' . $row->{'Time Zone'});
     return $row;
   }
 }
@@ -77,7 +81,6 @@ class PayPalOrdersUsersMigration extends PayPalBaseMigration {
       'pathauto',
     ));
     $this->addUnmigratedSources(array(
-      'Date',
       'Time',
       'Status',
       'Gross',
@@ -271,7 +274,6 @@ abstract class PayPalOrdersCustomerProfilesMigration extends PayPalBaseMigration
       'path',
     ));
     $this->addUnmigratedSources(array(
-      'Date',
       'Time',
       'Time Zone',
       'Status',
