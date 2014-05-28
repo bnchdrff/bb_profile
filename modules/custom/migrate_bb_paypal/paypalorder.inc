@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ *   PayPal Orders migration.
+ */
+
 // Common to all PayPal csv to Drupal entity migrations.
 abstract class PayPalBaseMigration extends Migration {
   // A Migration constructor takes an array of arguments as its first parameter.
@@ -18,12 +23,16 @@ abstract class PayPalBaseMigration extends Migration {
     }
     return FALSE;
   }
-}
 
-/**
- * @file
- *   PayPal Orders migration.
- */
+  public function prepareRow($row) {
+    $existing_user = user_load_by_mail($row->{'From Email Address'});
+    if ($existing_user->uid) {
+      $row->uid = $existing_user->uid;
+    }
+    $row->{'Country'} = _convert_country_name_to_country_code($row->{'Country'}); // TODO: make noise if this doesn't find a country.
+    return $row;
+  }
+}
 
 class PayPalOrdersUsersMigration extends PayPalBaseMigration {
   public function __construct(array $arguments) {
@@ -102,6 +111,7 @@ class PayPalOrdersUsersMigration extends PayPalBaseMigration {
     if ($this->skipRow($row)) {
       return FALSE;
     }
+    $row = parent::prepareRow($row);
 
     // On initial import, if this email address already exists, just map to the
     // existing uid and don't allow it to be deleted. When updating, we can
@@ -198,6 +208,7 @@ class PayPalOrdersMigration extends PayPalBaseMigration {
     if ($this->skipRow($row)) {
       return FALSE;
     }
+    $row = parent::prepareRow($row);
 
 dpm($row, 'orders prepareRow row!');
   
@@ -210,6 +221,7 @@ dpm($row, 'orders prepareRow row!');
   }
 
 }
+
 
 class PayPalOrdersCustomerProfilesBillingMigration extends PayPalBaseMigration {
   public function __construct(array $arguments) {
@@ -275,10 +287,37 @@ class PayPalOrdersCustomerProfilesBillingMigration extends PayPalBaseMigration {
       'Type',
     ));
   }
-  public function prepare($profile, stdClass $row) {
+  public function prepareRow($row) {
     if ($this->skipRow($row)) {
       return FALSE;
     }
-    dpm(get_defined_vars(), 'profile prepare');
+
+    $row = parent::prepareRow($row);
   }
+  public function prepare($profile, stdClass $row) {
+
+    // Adapted from: http://cgit.drupalcode.org/commerce_migrate_ubercart/tree/customer_billing_profile.inc#n79
+    $profile->commerce_customer_address[LANGUAGE_NONE][0] = array(
+      'xnl' => '<NameDetails PartyType="Person"><NameLine>' . $row->{'Name'} . '</NameLine></NameDetails>',
+      'name_line' => $row->{'Name'},
+      'administrative_area' => $row->{'State/Province/Region/County/Territory/Prefecture/Republic'},
+      'country' => !empty($row->{'Country'}) ? $row->{'Country'} : 'US',
+      'thoroughfare' => $row->{'Address Line 1'},
+      'locality' => $row->{'Town/City'},
+      'postal_code' => $row->{'Zip/Postal Code'},
+    );
+  }
+}
+
+/**
+ * Convert country name to ISO country code
+ * source: http://dropbucket.org/node/233
+ *
+ * @param $country - country name. Can be of any case
+ */
+function _convert_country_name_to_country_code($country) {
+  // Necessary for country_get_list().
+  require_once DRUPAL_ROOT . '/includes/locale.inc';
+  $countries = country_get_list();
+  return array_search(strtolower($country), array_map('strtolower', $countries));
 }
