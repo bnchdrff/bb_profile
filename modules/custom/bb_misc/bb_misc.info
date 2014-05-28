@@ -155,4 +155,3 @@ features_exclude[dependencies][commerce_order] = commerce_order
 features_exclude[dependencies][commerce_tax] = commerce_tax
 features_exclude[dependencies][entity] = entity
 features_exclude[dependencies][rules] = rules
-project path = /tmp
