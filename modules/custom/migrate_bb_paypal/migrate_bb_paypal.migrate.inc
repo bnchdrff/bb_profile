@@ -28,6 +28,10 @@ function migrate_bb_paypal_migrate_api() {
         'class_name' => 'PayPalOrdersCustomerProfilesBillingMigration',
         'group_name' => 'paypal',
       ),
+      'PayPalOrdersCustomerProfilesShipping' => array(
+        'class_name' => 'PayPalOrdersCustomerProfilesShippingMigration',
+        'group_name' => 'paypal',
+      ),
     ),
   );
 

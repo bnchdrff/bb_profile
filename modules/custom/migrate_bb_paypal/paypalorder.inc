@@ -167,6 +167,7 @@ class PayPalOrdersMigration extends PayPalBaseMigration {
     $this->addFieldMapping('order_number', null);
 
     $this->addFieldMapping('commerce_customer_billing', 'Transaction ID')->sourceMigration('PayPalOrdersCustomerProfilesBilling')->description(t('This customer profile is associated with this order.'));
+    $this->addFieldMapping('commerce_customer_shipping', 'Transaction ID')->sourceMigration('PayPalOrdersCustomerProfilesShipping')->description(t('This customer profile is associated with this order.'));
 
     $this->addFieldMapping('status', 'Status'); // Need to convert these values?
     $this->addFieldMapping('created', 'Date'); // use full date & time & tz
@@ -225,13 +226,12 @@ dpm($row, 'orders prepareRow row!');
 
 }
 
-
-class PayPalOrdersCustomerProfilesBillingMigration extends PayPalBaseMigration {
-  public function __construct(array $arguments) {
+abstract class PayPalOrdersCustomerProfilesMigration extends PayPalBaseMigration {
+  public function __construct(array $arguments, $type) {
     parent::__construct($arguments);
 
-    $this->description = t('Import PayPal Orders\' Customer Profile - billing from CSV.');
     $this->dependencies = array('PayPalOrdersUsers');
+    $this->description = t('Import PayPal Orders\' Customer Profile - ' . $type . ' from CSV.');
     // Create a map object for tracking the relationships between source rows
     $this->map = new MigrateSQLMap($this->machineName,
       array(
@@ -242,11 +242,12 @@ class PayPalOrdersCustomerProfilesBillingMigration extends PayPalBaseMigration {
           'description' => 'PayPal Transaction ID',
         ),
       ),
-      MigrateDestinationEntityAPI::getKeySchema('commerce_customer_profile', 'billing')
+      MigrateDestinationEntityAPI::getKeySchema('commerce_customer_profile', $type)
     );
-    $this->destination = new MigrateDestinationEntityAPI('commerce_customer_profile', 'billing');
+    $this->destination = new MigrateDestinationEntityAPI('commerce_customer_profile', $type);
+
     $this->addFieldMapping('uid', 'Transaction ID')->sourceMigration('PayPalOrdersUsers')->description(t('The assignment of customer profile address for orders.'));;
-    $this->addFieldMapping('type', null)->defaultValue('billing');
+    $this->addFieldMapping('type', null)->defaultValue($type);
     $this->addFieldMapping('user', null); // username?
 
     $this->addFieldMapping('status', null)->defaultValue('1');
@@ -290,16 +291,12 @@ class PayPalOrdersCustomerProfilesBillingMigration extends PayPalBaseMigration {
       'Type',
     ));
   }
+
   public function prepareRow($row) {
     // TODO: try to find an existing customer profile based on the address??
-    if ($this->skipRow($row)) {
-      return FALSE;
-    }
-
     $row = parent::prepareRow($row);
   }
   public function prepare($profile, stdClass $row) {
-
     // Adapted from: http://cgit.drupalcode.org/commerce_migrate_ubercart/tree/customer_billing_profile.inc#n79
     $profile->commerce_customer_address[LANGUAGE_NONE][0] = array(
       'xnl' => '<NameDetails PartyType="Person"><NameLine>' . $row->{'Name'} . '</NameLine></NameDetails>',
@@ -312,6 +309,41 @@ class PayPalOrdersCustomerProfilesBillingMigration extends PayPalBaseMigration {
     );
   }
 }
+
+class PayPalOrdersCustomerProfilesBillingMigration extends PayPalOrdersCustomerProfilesMigration {
+  public function __construct(array $arguments) {
+    parent::__construct($arguments, 'billing');
+  }
+
+  public function prepareRow($row) {
+    if ($this->skipRow($row)) {
+      return FALSE;
+    }
+
+    $row = parent::prepareRow($row);
+  }
+  public function prepare($profile, stdClass $row) {
+    $profile = parent::prepare($profile, $row);
+  }
+}
+
+class PayPalOrdersCustomerProfilesShippingMigration extends PayPalOrdersCustomerProfilesMigration {
+  public function __construct(array $arguments) {
+    parent::__construct($arguments, 'shipping');
+  }
+
+  public function prepareRow($row) {
+    if ($this->skipRow($row)) {
+      return FALSE;
+    }
+
+    $row = parent::prepareRow($row);
+  }
+  public function prepare($profile, stdClass $row) {
+    $profile = parent::prepare($profile, $row);
+  }
+}
+
 
 /**
  * Convert country name to ISO country code
