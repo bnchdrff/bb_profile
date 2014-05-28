@@ -62,13 +62,13 @@ class PayPalOrdersUsersMigration extends PayPalBaseMigration {
     $this->addFieldMapping('name', 'Name'); // TODO: avoid duplicate/existing names? 
     $this->addFieldMapping('status', null)->defaultValue('1');
     $this->addFieldMapping('language', null)->defaultValue('en');
-    $this->addFieldMapping('created', 'Date'); // use full date & time & tz
-    $this->addFieldMapping('timezone', 'Time Zone'); // use full date & time & tz
+    $this->addFieldMapping('created', 'Date');
+    $this->addFieldMapping('timezone', 'Time Zone');
     $this->addUnmigratedDestinations(array(
       'pass',
       'access',
       'login',
-      'roles', // is there a default role for customers?
+      'roles', // TODO:  is there a default role for customers?
       'role_names',
       'picture',
       'signature',
@@ -76,7 +76,7 @@ class PayPalOrdersUsersMigration extends PayPalBaseMigration {
       'theme',
       'init',
       'data',
-      'is_new', // create a new user?
+      'is_new', // TODO: set this to create a new user?
       'path',
       'pathauto',
     ));
@@ -172,13 +172,13 @@ class PayPalOrdersMigration extends PayPalBaseMigration {
     $this->addFieldMapping('commerce_customer_billing', 'Transaction ID')->sourceMigration('PayPalOrdersCustomerProfilesBilling')->description(t('This customer profile is associated with this order.'));
     $this->addFieldMapping('commerce_customer_shipping', 'Transaction ID')->sourceMigration('PayPalOrdersCustomerProfilesShipping')->description(t('This customer profile is associated with this order.'));
 
-    $this->addFieldMapping('status', 'Status'); // Need to convert these values?
-    $this->addFieldMapping('created', 'Date'); // use full date & time & tz
-    $this->addFieldMapping('field_shipped_date', 'Date'); // use full date & time & tz
-    $this->addFieldMapping('field_shipped_date:timezone', 'Time Zone'); // use full date & time & tz
+    $this->addFieldMapping('status', 'Status');
+    $this->addFieldMapping('created', 'Date');
+    $this->addFieldMapping('field_shipped_date', 'Date');
+    $this->addFieldMapping('field_shipped_date:timezone', 'Time Zone');
     $this->addFieldMapping('mail', 'From Email Address');
     $this->addFieldMapping('commerce_order_total', 'Gross');
-    $this->addFieldMapping('commerce_order_total:currency_code', null)->defaultValue('USD'); // unsure
+    $this->addFieldMapping('commerce_order_total:currency_code', null)->defaultValue('USD'); // TODO: different currency code?
     $this->addFieldMapping('type', null)->defaultValue('commerce_order');
     $this->addUnmigratedDestinations(array(
       'changed',
@@ -254,7 +254,7 @@ abstract class PayPalOrdersCustomerProfilesMigration extends PayPalBaseMigration
     $this->addFieldMapping('user', null); // username?
 
     $this->addFieldMapping('status', null)->defaultValue('1');
-    $this->addFieldMapping('created', 'Date'); // use full date & time & tz
+    $this->addFieldMapping('created', 'Date');
     $this->addFieldMapping('commerce_customer_address:administrative_area', 'State/Province/Region/County/Territory/Prefecture/Republic');
     $this->addFieldMapping('commerce_customer_address:locality', 'Town/City');
     $this->addFieldMapping('commerce_customer_address:postal_code', 'Zip/Postal Code');
