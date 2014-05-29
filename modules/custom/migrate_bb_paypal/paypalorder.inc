@@ -378,3 +378,118 @@ function _convert_country_name_to_country_code($country) {
   $countries = country_get_list();
   return array_search(strtolower($country), array_map('strtolower', $countries));
 }
+
+abstract class PayPalOrdersLineItemsMigration extends PayPalBaseMigration {
+  public function __construct(array $arguments, $type) {
+    parent::__construct($arguments);
+
+    $this->description = t('Import PayPal Orders\'' . $type . ' line items from CSV.');
+    $this->dependencies = array('PayPalOrders');
+    // Create a map object for tracking the relationships between source rows
+    $this->map = new MigrateSQLMap($this->machineName,
+      array(
+        'Transaction ID' => array(
+          'type' => 'varchar',
+          'length' => 20,
+          'not null' => TRUE,
+          'description' => 'PayPal Transaction ID',
+        ),
+      ),
+      MigrateDestinationEntityAPI::getKeySchema('commerce_line_item', $type)
+    );
+    $this->destination = new MigrateDestinationEntityAPI('commerce_line_item', $type);
+
+    $this->addFieldMapping('order_id', 'Transaction ID')->sourceMigration('PayPalOrders')->description(t('the orders\' line items migration follows the order  migration.')); // based on the order users migration
+    $this->addFieldMapping('owner', 'owner_name');
+    $this->addFieldMapping('order_number', null);
+    $this->addFieldMapping('created', 'Date');
+  }
+}
+
+class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigration {
+  public function __construct(array $arguments) {
+    $type = 'product';
+    parent::__construct($arguments, $type);
+
+    $this->addFieldMapping('quantity', 'quantity'); // Need to preprocess this field to get total.
+    $this->addFieldMapping('line_item_label', null)->defaultValue('beardbalm-single');
+    $this->addFieldMapping('type', null)->defaultValue($type);
+    $this->addUnmigratedDestinations(array(
+      'changed',
+    ));
+    $this->addUnmigratedSources(array(
+      'Balance',
+      'Time',
+      'Time Zone',
+      'Counterparty Status',
+      'Item Title',
+      'Type',
+      'Name',
+      'Fee',
+      'Address Status',
+      'Shipping and Handling Amount',
+      'Receipt ID',
+      'Address Line 1',
+      'Address Line 2/District/Neighborhood',
+      'Town/City',
+      'State/Province/Region/County/Territory/Prefecture/Republic',
+      'Zip/Postal Code',
+      'Country',
+    ));
+  }
+
+  function prepareRow($row) {
+    $row->quantity = _calculateQuantityFromGross($row->{'Gross'}, $row->{'Shipping and Handling Amount'});
+  }
+
+  function prepare($line_item, stdClass $row) {
+    $line_item->type = 'product';
+
+    // Add a base price component.
+    $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
+    $price = $line_item_wrapper->commerce_unit_price;
+    $base_price = array(
+      'amount' => $price->amount->value(),
+      'currency_code' => $price->currency_code->value(),
+      'data' => array(),
+    );
+    $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add($base_price, 'base_price', $base_price, TRUE);
+
+    $line_item->order_id = $line_item->order_id['destid1'];
+  }
+
+  /**
+   * A line item has been saved. Reference it from the order.
+   */
+  function complete($line_item, stdClass $row) {
+    $order_id = $line_item->order_id;
+    $delta = db_query("SELECT COUNT(entity_id) FROM {field_data_commerce_line_items} WHERE entity_id = :order_id",
+                      array(':order_id' => $order_id))->fetchField();
+
+    db_insert('field_data_commerce_line_items')
+      ->fields(array(
+        'entity_id' => $order_id,
+        'revision_id' => $order_id,
+        'entity_type' => 'commerce_order',
+        'bundle' => 'commerce_order',
+        'deleted' => 0,
+        'language' => LANGUAGE_NONE,
+        'delta' => $delta,
+        'commerce_line_items_line_item_id' => $line_item->line_item_id,
+      ))
+      ->execute();
+  }
+
+  /**
+   * The line item has been deleted, delete its references.
+   */
+  function completeRollback($line_item_id) {
+    db_delete('field_data_commerce_line_items')
+      ->condition('commerce_line_items_line_item_id', $line_item_id)
+      ->execute();
+  }
+}
+
+function _calculateQuantityFromGross($gross, $shippingAmount) {
+  return ($gross - $shippingAmount) / 16;
+}
