@@ -14,11 +14,18 @@ abstract class PayPalBaseMigration extends Migration {
 
     // using sheet1 from the "2012-2/6/2014" doc to test.
     $this->source = new MigrateSourceCSV(drupal_get_path('module', 'migrate_bb_paypal') . '/paypal_bb_test.csv', array(), array('header_rows'=>1,'embedded_newlines'=>FALSE));
+
+    if (module_exists('path')) {
+      $this->addFieldMapping('path')
+           ->issueGroup(t('DNM'));
+    }
   }
 
   public function skipRow($row) {
     // Skip bank account withdraws.
-    if ($row->{'Type'} == 'Withdraw Funds to a Bank Account') {
+    if ($row->{'Type'} == 'Withdraw Funds to a Bank Account' || 
+        $row->{'Type'} == 'Refund' || // TODO: change orders that were refunded?
+        $row->{'Type'} == 'Cancelled Fee') {
       return TRUE;
     }
     return FALSE;
@@ -77,7 +84,6 @@ class PayPalOrdersUsersMigration extends PayPalBaseMigration {
       'init',
       'data',
       'is_new', // TODO: set this to create a new user?
-      'path',
       'pathauto',
     ));
     $this->addUnmigratedSources(array(
@@ -183,8 +189,8 @@ class PayPalOrdersMigration extends PayPalBaseMigration {
     $this->addUnmigratedDestinations(array(
       'changed',
       'hostname',
-      'path',
       'commerce_discounts',
+      'commerce_line_items', // This is handled in the LineItems' migration's complete function.
       'field_special_instructions',
       'field_special_instructions:language',
       'field_paypal_transaction_id:language',
@@ -196,12 +202,26 @@ class PayPalOrdersMigration extends PayPalBaseMigration {
       'field_customs_id:language',
       'field_amazon_transaction_id',
       'field_amazon_transaction_id:language',
+      'commerce_order_total:tax_rate', // TODO: is there a default for this?
     ));
     $this->addUnmigratedSources(array(
       'Balance',
+      'Time',
       'Counterparty Status',
       'Item Title',
       'Type',
+      'Name',
+      'Fee',
+      'Net',
+      'Address Status',
+      'Shipping and Handling Amount',
+      'Receipt ID',
+      'Address Line 1',
+      'Address Line 2/District/Neighborhood',
+      'Town/City',
+      'State/Province/Region/County/Territory/Prefecture/Republic',
+      'Zip/Postal Code',
+      'Country',
     ));
   }
 
@@ -249,7 +269,7 @@ abstract class PayPalOrdersCustomerProfilesMigration extends PayPalBaseMigration
     );
     $this->destination = new MigrateDestinationEntityAPI('commerce_customer_profile', $type);
 
-    $this->addFieldMapping('uid', 'Transaction ID')->sourceMigration('PayPalOrdersUsers')->description(t('The assignment of customer profile address for orders.'));;
+    $this->addFieldMapping('uid', 'Transaction ID')->sourceMigration('PayPalOrdersUsers')->description(t('The assignment of customer profile address for orders.'));
     $this->addFieldMapping('type', null)->defaultValue($type);
     $this->addFieldMapping('user', null); // username?
 
@@ -271,7 +291,6 @@ abstract class PayPalOrdersCustomerProfilesMigration extends PayPalBaseMigration
       'commerce_customer_address:last_name',
       'commerce_customer_address:first_name',
       'commerce_customer_address:data',
-      'path',
     ));
     $this->addUnmigratedSources(array(
       'Time',
