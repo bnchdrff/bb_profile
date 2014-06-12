@@ -69,6 +69,20 @@ function bb_misc_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'commerce_empty_cart_paths';
+  $strongarm->value = 'checkout
+checkout/*
+cart
+cart/*
+faq
+instructions
+ingredients
+<front>';
+  $export['commerce_empty_cart_paths'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__product_display';
   $strongarm->value = array(
     'view_modes' => array(
