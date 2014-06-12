@@ -56,12 +56,6 @@ function bb_misc_context_default_contexts() {
           'region' => 'sidebar_second',
           'weight' => '-19',
         ),
-        'menu-menu-user-menu' => array(
-          'module' => 'menu',
-          'delta' => 'menu-user-menu',
-          'region' => 'sidebar_second',
-          'weight' => '-18',
-        ),
       ),
     ),
   );

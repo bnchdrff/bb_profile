@@ -127,7 +127,7 @@ function bb_misc_default_rules_configuration() {
         { "mail" : {
             "to" : [ "commerce-order:mail" ],
             "subject" : "Order [commerce-order:order-number] at [site:name]",
-            "message" : "Hi [commerce-order:commerce-customer-billing:commerce-customer-address:first_name], got you all packed up, will ship today!\\r\\n-Jon\\r\\n",
+            "message" : "Hi [commerce-order:commerce-customer-billing:commerce-customer-address:first_name], got you all packed up, will ship today!\\r\\n\\r\\n-Jon\\r\\n",
             "language" : [ "" ]
           }
         }
@@ -156,7 +156,7 @@ function bb_misc_default_rules_configuration() {
         { "mail" : {
             "to" : [ "commerce-order:mail" ],
             "subject" : "Order [commerce-order:order-number] at [site:name]",
-            "message" : "Hi [commerce-order:commerce-customer-billing:commerce-customer-address:first_name], your order will ship today from our fulfillment partner is Hong Kong via Sinagpore Post. Your customs number is [commerce-order:field-customs-id] and you can follow it\\u2019s progress at this site: http:\\/\\/www.17track.net\\/en\\/result\\/post.shtml?nums=[commerce-order:field-customs-id]\\r\\nIt will take a few days for your parcel to enter the system so don\\u2019t be surprised when you don\\u2019t see anything pop up on there right now. Your package is shipping out on a boat, so it may sit in the port for several days or longer. After it leaves Hong Kong, there will be no further updates until it reaches [commerce-order:commerce-customer-billing:commerce-customer-address:country]. At that point, a phone call to your post office is the best way to get your packages cleared through customs and delivered.\\r\\nPlease keep me posted! International shipping is a complex task and I\\u2019m always happy to know when packages arrive safely and to troubleshoot problems.\\r\\n-Jon",
+            "message" : "Hi [commerce-order:commerce-customer-billing:commerce-customer-address:first_name], your order will ship today from our fulfilment partner is Hong Kong via Sinagpore Post. Your customs number is [commerce-order:field-customs-id] and you can follow it\\u2019s progress at this site: http:\\/\\/www.17track.net\\/en\\/result\\/post.shtml?nums=[commerce-order:field-customs-id]\\r\\n\\r\\nIt will take a few days for your parcel to enter the system so don\\u2019t be surprised when you don\\u2019t see anything pop up on there right now. Your package is shipping out on a boat, so it may sit in the port for several days or longer. After it leaves Hong Kong, there will be no further updates until it reaches [commerce-order:commerce-customer-billing:commerce-customer-address:country]. At that point, a phone call to your post office is the best way to get your packages cleared through customs and delivered.\\r\\n\\r\\nPlease keep me posted! International shipping is a complex task and I\\u2019m always happy to know when packages arrive safely and to troubleshoot problems.\\r\\n\\r\\n-Jon",
             "language" : [ "" ]
           }
         }
@@ -166,26 +166,17 @@ function bb_misc_default_rules_configuration() {
   $items['commerce_checkout_order_email'] = entity_import('rules_config', '{ "commerce_checkout_order_email" : {
       "LABEL" : "Send an order notification e-mail",
       "PLUGIN" : "reaction rule",
-      "WEIGHT" : "1",
+      "WEIGHT" : "4",
       "OWNER" : "rules",
       "TAGS" : [ "Commerce Checkout" ],
-      "REQUIRES" : [ "rules", "commerce", "commerce_checkout" ],
+      "REQUIRES" : [ "rules", "commerce_checkout" ],
       "ON" : { "commerce_checkout_complete" : [] },
-      "IF" : [
-        { "NOT data_is" : { "data" : [ "commerce-order:uid" ], "value" : "0" } },
-        { "entity_exists" : {
-            "type" : "user",
-            "property" : "mail",
-            "value" : [ "commerce-order:mail" ]
-          }
-        }
-      ],
       "DO" : [
         { "mail" : {
             "to" : [ "commerce-order:mail" ],
             "subject" : "Order [commerce-order:order-number] at [site:name]",
-            "message" : "Thanks for your order [commerce-order:order-number] at [site:name].\\r\\n\\r\\nIf this is your first order with us, you will receive a separate e-mail with login instructions. You can view your order history with us at any time by logging into our website at:\\r\\n\\r\\n[site:login-url]\\r\\n\\r\\nYou can find the status of your current order at:\\r\\n\\r\\n[commerce-order:customer-url]\\r\\n\\r\\nPlease contact us if you have any questions about your order.",
-            "language" : [ "commerce-order:state" ]
+            "message" : "Thanks for your order [commerce-order:order-number] at [site:name].\\n\\nIf this is your first order with us, you will receive a separate e-mail with login instructions. You can view your order history with us at any time by logging into our website at:\\n\\n[site:login-url]\\n\\nYou can find the status of your current order at:\\n\\n[commerce-order:customer-url]\\n\\nPlease contact us if you have any questions about your order.",
+            "from" : ""
           }
         }
       ]
