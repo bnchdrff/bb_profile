@@ -399,25 +399,9 @@ abstract class PayPalOrdersLineItemsMigration extends PayPalBaseMigration {
     $this->destination = new MigrateDestinationEntityAPI('commerce_line_item', $type);
 
     $this->addFieldMapping('order_id', 'Transaction ID')->sourceMigration('PayPalOrders')->description(t('the orders\' line items migration follows the order  migration.')); // based on the order users migration
-    $this->addFieldMapping('owner', 'owner_name');
-    $this->addFieldMapping('order_number', null);
-    $this->addFieldMapping('created', 'Date');
-  }
-}
-
-class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigration {
-  public function __construct(array $arguments) {
-    $type = 'product';
-    parent::__construct($arguments, $type);
-
-    $this->addFieldMapping('quantity', 'quantity'); // Need to preprocess this field to get total.
-    $this->addFieldMapping('commerce_total', 'Net');
-    $this->addFieldMapping('commerce_product', null)->defaultValue(3);
-    $this->addFieldMapping('line_item_label', null)->defaultValue('beardbalm-single');
     $this->addFieldMapping('type', null)->defaultValue($type);
-    $this->addFieldMapping('commerce_unit_price', null)->defaultValue(16);
+    $this->addFieldMapping('created', 'Date');
     $this->addUnmigratedDestinations(array(
-      'changed',
       'order', // this is handled in the complete?
       'commerce_unit_price:currency_code',
       'commerce_unit_price:tax_rate',
@@ -427,6 +411,9 @@ class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigrat
       'commerce_display_path:language',
     ));
     $this->addUnmigratedSources(array(
+      'Status',
+      'Gross',
+      'From Email Address',
       'Balance',
       'Time',
       'Time Zone',
@@ -436,7 +423,6 @@ class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigrat
       'Name',
       'Fee',
       'Address Status',
-      'Shipping and Handling Amount',
       'Receipt ID',
       'Address Line 1',
       'Address Line 2/District/Neighborhood',
@@ -447,20 +433,11 @@ class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigrat
     ));
   }
 
-  function prepareRow($row) {
-    if ($this->skipRow($row)) {
-      return FALSE;
-    }
-
+  public function prepareRow($row) {
     $row = parent::prepareRow($row);
-    $row->quantity = _calculateQuantityFromGross($row->{'Gross'}, $row->{'Shipping and Handling Amount'});
   }
 
   function prepare($line_item, stdClass $row) {
-
-    // The destination line item type is product
-    $line_item->type = 'product';
-
     // Add a base price component.
     $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
 
@@ -501,6 +478,32 @@ class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigrat
     db_delete('field_data_commerce_line_items')
       ->condition('commerce_line_items_line_item_id', $line_item_id)
       ->execute();
+  }
+
+}
+
+class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigration {
+  public function __construct(array $arguments) {
+    $type = 'product';
+    parent::__construct($arguments, $type);
+
+    $this->addFieldMapping('quantity', 'quantity'); // Calculated in prepareRow().
+    $this->addFieldMapping('commerce_total', 'Net');
+    $this->addFieldMapping('commerce_product', null)->defaultValue(3);
+    $this->addFieldMapping('line_item_label', null)->defaultValue('beardbalm-single');
+    $this->addFieldMapping('commerce_unit_price', null)->defaultValue(16);
+    $this->addUnmigratedSources(array(
+      'Shipping and Handling Amount',
+    ));
+  }
+
+  function prepareRow($row) {
+    if ($this->skipRow($row)) {
+      return FALSE;
+    }
+
+    $row->quantity = _calculateQuantityFromGross($row->{'Gross'}, $row->{'Shipping and Handling Amount'});
+    $row = parent::prepareRow($row);
   }
 }
 
