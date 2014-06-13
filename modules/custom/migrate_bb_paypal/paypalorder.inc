@@ -412,10 +412,20 @@ class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigrat
     parent::__construct($arguments, $type);
 
     $this->addFieldMapping('quantity', 'quantity'); // Need to preprocess this field to get total.
+    $this->addFieldMapping('commerce_total', 'Net');
+    $this->addFieldMapping('commerce_product', null)->defaultValue(3);
     $this->addFieldMapping('line_item_label', null)->defaultValue('beardbalm-single');
     $this->addFieldMapping('type', null)->defaultValue($type);
+    $this->addFieldMapping('commerce_unit_price', null)->defaultValue(16);
     $this->addUnmigratedDestinations(array(
       'changed',
+      'order', // this is handled in the complete?
+      'commerce_unit_price:currency_code',
+      'commerce_unit_price:tax_rate',
+      'commerce_total:currency_code',
+      'commerce_total:tax_rate',
+      'commerce_display_path',
+      'commerce_display_path:language',
     ));
     $this->addUnmigratedSources(array(
       'Balance',
@@ -439,14 +449,22 @@ class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigrat
   }
 
   function prepareRow($row) {
+    if ($this->skipRow($row)) {
+      return FALSE;
+    }
+
+    $row = parent::prepareRow($row);
     $row->quantity = _calculateQuantityFromGross($row->{'Gross'}, $row->{'Shipping and Handling Amount'});
   }
 
   function prepare($line_item, stdClass $row) {
+
+    // The destination line item type is product
     $line_item->type = 'product';
 
     // Add a base price component.
     $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
+
     $price = $line_item_wrapper->commerce_unit_price;
     $base_price = array(
       'amount' => $price->amount->value(),
@@ -455,29 +473,26 @@ class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigrat
     );
     $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add($base_price, 'base_price', $base_price, TRUE);
 
-    $line_item->order_id = $line_item->order_id['destid1'];
+    // The destination mapping schema has two primary keys when revisioning is
+    // enabled (order_id and revision_id). When the field mapping looks up the
+    // source migration to match the order_id, it gets both the destid1 and
+    // destid2 from the mapping table. We need to pick one here or every
+    // order_id ends up as 1
+    if (is_array($line_item->order_id) && isset($line_item->order_id['destid1'])) {
+      $line_item->order_id = $line_item->order_id['destid1'];
+    }
   }
 
   /**
    * A line item has been saved. Reference it from the order.
    */
   function complete($line_item, stdClass $row) {
-    $order_id = $line_item->order_id;
-    $delta = db_query("SELECT COUNT(entity_id) FROM {field_data_commerce_line_items} WHERE entity_id = :order_id",
-                      array(':order_id' => $order_id))->fetchField();
-
-    db_insert('field_data_commerce_line_items')
-      ->fields(array(
-        'entity_id' => $order_id,
-        'revision_id' => $order_id,
-        'entity_type' => 'commerce_order',
-        'bundle' => 'commerce_order',
-        'deleted' => 0,
-        'language' => LANGUAGE_NONE,
-        'delta' => $delta,
-        'commerce_line_items_line_item_id' => $line_item->line_item_id,
-      ))
-      ->execute();
+    // We need to do a full order save here so that commerce recalculates
+    // the total with our price components
+    $order = commerce_order_load($line_item->order_id);
+    $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+    $order_wrapper->commerce_line_items[] = $line_item;
+    $order_wrapper->save();
   }
 
   /**
