@@ -237,14 +237,13 @@ class PayPalOrdersMigration extends PayPalBaseMigration {
     }
     $row = parent::prepareRow($row);
 
-dpm($row, 'orders prepareRow row!');
-  
+    if ($row->{'Status'} == 'Completed') 
+      $row->{'Status'} = strtolower($row->{'Status'});
+
     return TRUE;
   }
 
   public function prepare($entity, stdClass $row) {
-    dpm($entity, 'orders prepare entity');
-    dpm($row, 'orders prepare row');
   }
 
 }
