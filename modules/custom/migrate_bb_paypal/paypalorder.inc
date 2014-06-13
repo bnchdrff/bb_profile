@@ -479,7 +479,6 @@ abstract class PayPalOrdersLineItemsMigration extends PayPalBaseMigration {
       ->condition('commerce_line_items_line_item_id', $line_item_id)
       ->execute();
   }
-
 }
 
 class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigration {
@@ -510,3 +509,34 @@ class PayPalOrdersLineItemsProductsMigration extends PayPalOrdersLineItemsMigrat
 function _calculateQuantityFromGross($gross, $shippingAmount) {
   return ($gross - $shippingAmount) / 16;
 }
+
+class PayPalOrdersLineItemsShippingMigration extends PayPalOrdersLineItemsMigration {
+  public function __construct(array $arguments) {
+    $type = 'shipping';
+    parent::__construct($arguments, $type);
+
+    $this->addFieldMapping('quantity', null)->defaultValue(1); // Calculated in prepareRow().
+    $this->addFieldMapping('commerce_total', 'Shipping and Handling Amount');
+    $this->addFieldMapping('commerce_product', null)->defaultValue(3);
+    $this->addFieldMapping('line_item_label', null)->defaultValue('beardbalm-single'); // TODO: determine 
+    $this->addFieldMapping('commerce_unit_price', 'Shipping and Handling Amount');
+  }
+
+  function prepareRow($row) {
+    if ($this->skipRow($row)) {
+      return FALSE;
+    }
+
+    $row = parent::prepareRow($row);
+  }
+
+  function prepare($line_item, stdClass $row) {
+    // Add a base price component.
+    $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
+    // TODO: how do I set this data? 
+    $line_item_wrapper->commerce_shipping_service = 'expedited_us';
+    dpm($line_item_wrapper->getPropertyInfo());
+  }
+}
+
+
