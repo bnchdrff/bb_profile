@@ -36,6 +36,10 @@ function migrate_bb_paypal_migrate_api() {
         'class_name' => 'PayPalOrdersLineItemsProductsMigration',
         'group_name' => 'paypal',
       ),
+      'PayPalOrdersLineItemsShipping' => array(
+        'class_name' => 'PayPalOrdersLineItemsShippingMigration',
+        'group_name' => 'paypal',
+      ),
     ),
   );
 

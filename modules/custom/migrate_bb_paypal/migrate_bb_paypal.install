@@ -12,4 +12,5 @@ function migrate_bb_paypal_disable() {
   Migration::deregisterMigration('PayPalOrdersCustomerProfilesBilling');
   Migration::deregisterMigration('PayPalOrdersCustomerProfilesShipping');
   Migration::deregisterMigration('PayPalOrdersLineItemsProducts');
+  Migration::deregisterMigration('PayPalOrdersLineItemsShipping');
 }
