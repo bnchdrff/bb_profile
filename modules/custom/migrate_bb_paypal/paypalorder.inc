@@ -467,6 +467,7 @@ abstract class PayPalOrdersLineItemsMigration extends PayPalBaseMigration {
     // the total with our price components
     $order = commerce_order_load($line_item->order_id);
     $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+    dpm($line_item, 'line item in complete');
     $order_wrapper->commerce_line_items[] = $line_item;
     $order_wrapper->save();
   }
@@ -515,10 +516,10 @@ class PayPalOrdersLineItemsShippingMigration extends PayPalOrdersLineItemsMigrat
     $type = 'shipping';
     parent::__construct($arguments, $type);
 
-    $this->addFieldMapping('quantity', null)->defaultValue(1); // Calculated in prepareRow().
+    $this->addFieldMapping('quantity', null)->defaultValue(1);
     $this->addFieldMapping('commerce_total', 'Shipping and Handling Amount');
     $this->addFieldMapping('commerce_product', null)->defaultValue(3);
-    $this->addFieldMapping('line_item_label', null)->defaultValue('beardbalm-single'); // TODO: determine 
+    $this->addFieldMapping('line_item_label', null)->defaultValue('Expedited US'); // TODO: determine 
     $this->addFieldMapping('commerce_unit_price', 'Shipping and Handling Amount');
   }
 
@@ -531,11 +532,27 @@ class PayPalOrdersLineItemsShippingMigration extends PayPalOrdersLineItemsMigrat
   }
 
   function prepare($line_item, stdClass $row) {
-    // Add a base price component.
+    $service = 'expedited_us'; // TODO: Determine service?
+    $line_item->data['shipping_service'] = commerce_shipping_service_load($service);
+    if (is_array($line_item->order_id) && isset($line_item->order_id['destid1'])) {
+      $line_item->order_id = $line_item->order_id['destid1'];
+    }
+    dpm($line_item);
     $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
-    // TODO: how do I set this data? 
-    $line_item_wrapper->commerce_shipping_service = 'expedited_us';
-    dpm($line_item_wrapper->getPropertyInfo());
+    $line_item_wrapper->commerce_shipping_service = $service;
+
+    // Add a base price component.
+    $price = $line_item_wrapper->commerce_unit_price;
+    $base_price = array(
+      'amount' => $price->amount->value(),
+      'currency_code' => $price->currency_code->value(),
+      'data' => array(),
+    );
+    $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add($base_price, 'base_price', $base_price, TRUE);
+
+
+    //$data = array('shipping_service' => commerce_shipping_service_load($service));
+    //$line_item_wrapper->commerce_shipping_service->data = commerce_shipping_service_load($service);
   }
 }
 
