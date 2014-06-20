@@ -25,6 +25,7 @@ abstract class PayPalBaseMigration extends Migration {
     // Skip bank account withdraws.
     if ($row->{'Type'} == 'Withdraw Funds to a Bank Account' || 
         $row->{'Type'} == 'Refund' || // TODO: change orders that were refunded?
+        $row->{'Type'} == 'Invoice Sent' || // has corresponding "Payment Received" row.
         $row->{'Type'} == 'Cancelled Fee') {
       return TRUE;
     }
@@ -270,7 +271,7 @@ abstract class PayPalOrdersCustomerProfilesMigration extends PayPalBaseMigration
 
     $this->addFieldMapping('uid', 'Transaction ID')->sourceMigration('PayPalOrdersUsers')->description(t('The assignment of customer profile address for orders.'));
     $this->addFieldMapping('type', null)->defaultValue($type);
-    $this->addFieldMapping('user', null); // username?
+    $this->addFieldMapping('user', null); //TODO: username?
 
     $this->addFieldMapping('status', null)->defaultValue('1');
     $this->addFieldMapping('created', 'Date');
@@ -550,9 +551,6 @@ class PayPalOrdersLineItemsShippingMigration extends PayPalOrdersLineItemsMigrat
     );
     $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add($base_price, 'base_price', $base_price, TRUE);
 
-
-    //$data = array('shipping_service' => commerce_shipping_service_load($service));
-    //$line_item_wrapper->commerce_shipping_service->data = commerce_shipping_service_load($service);
   }
 }
 
