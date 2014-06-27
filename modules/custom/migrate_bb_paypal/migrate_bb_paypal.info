@@ -12,4 +12,8 @@ dependencies[] = commerce_line_item
 
 ; Migrations
 files[] = migrate_bb_paypal.migrate.inc
+files[] = paypalbase.inc
 files[] = paypalorder.inc
+files[] = paypaluser.inc
+files[] = paypallineitem.inc
+files[] = paypalcustomer.inc
