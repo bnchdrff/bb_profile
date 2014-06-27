@@ -13,7 +13,7 @@ abstract class PayPalBaseMigration extends Migration {
     parent::__construct($arguments);
 
     // using sheet1 from the "2012-2/6/2014" doc to test.
-    $this->source = new MigrateSourceCSV(drupal_get_path('module', 'migrate_bb_paypal') . '/paypal_bb_test.csv', array(), array('header_rows'=>1,'embedded_newlines'=>FALSE));
+    $this->source = new MigrateSourceCSV(drupal_get_path('module', 'migrate_bb_paypal') . '/paypal_bb_test.full.csv', array(), array('header_rows'=>1,'embedded_newlines'=>FALSE));
 
     if (module_exists('path')) {
       $this->addFieldMapping('path')
@@ -39,6 +39,8 @@ abstract class PayPalBaseMigration extends Migration {
     }
 
     $row->{'Country'} = _convert_country_name_to_country_code($row->{'Country'}); // TODO: make noise if this doesn't find a country.
+
+    $row->{'Name'} = check_plain($row->{'Name'});
 
     // Covert row date to timestamp.
     $row->{'Date'} = strtotime($row->{'Date'} . ' ' . $row->{'Time'} . ' ' . $row->{'Time Zone'});
@@ -123,22 +125,15 @@ class PayPalOrdersUsersMigration extends PayPalBaseMigration {
     }
     $row = parent::prepareRow($row);
 
+    $row->{'Name'} = _avoidExistingUserNames($row->{'Name'});
+
     // On initial import, if this email address already exists, just map to the
-    // existing uid and don't allow it to be deleted. When updating, we can
-    // take the existing uid from the map instead of querying for it. Make sure
-    // when updating an imported user that we don't apply this logic.
-
-    if (empty($row->migrate_map_destid1)) {
-      $existing_user = user_load_by_mail($row->{'From Email Address'});
+    // existing uid and don't allow it to be deleted.
+    $existing_user = user_load_by_mail($row->{'From Email Address'});
+    if ($existing_user) {
+      dpm($row, 'row');
       $new_uid = $existing_user->uid;
-    }
-    elseif ($row->migrate_map_needs_update == MigrateMap::STATUS_IGNORED &&
-            $row->migrate_map_rollback_action == MigrateMap::ROLLBACK_PRESERVE) {
-      $new_uid = $row->migrate_map_destid1;
-    }
 
-    //  need to do something like this to prevent deleting existing users on rollback?
-    if (!empty($new_uid)) {
       $hash = isset($row->migrate_map_hash) ? $row->migrate_map_hash : NULL;
       $this->map->saveIDMapping($row, array($new_uid), MigrateMap::STATUS_IGNORED,
         MigrateMap::ROLLBACK_PRESERVE, $hash);
@@ -150,6 +145,14 @@ class PayPalOrdersUsersMigration extends PayPalBaseMigration {
   }
 }
 
+// Helper function to alter the user name to avoid conflicts with existing names.
+function _avoidExistingUserNames($name) {
+    $user = user_load_by_name($name);
+    if ($user) {
+      return _avoidExistingUserNames($name . '_');
+    }
+    return $name;
+}
 
 class PayPalOrdersMigration extends PayPalBaseMigration {
   public function __construct(array $arguments) {
