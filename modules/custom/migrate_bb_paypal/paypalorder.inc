@@ -69,7 +69,7 @@ class PayPalOrdersUsersMigration extends PayPalBaseMigration {
 
     $this->addFieldMapping('mail', 'From Email Address');
     $this->addFieldMapping('uid', 'uid');
-    $this->addFieldMapping('name', 'Name'); // TODO: avoid duplicate/existing names? 
+    $this->addFieldMapping('name', 'Name')->dedupe('users', 'name');
     $this->addFieldMapping('status', null)->defaultValue('1');
     $this->addFieldMapping('language', null)->defaultValue('en');
     $this->addFieldMapping('created', 'Date');
@@ -125,8 +125,6 @@ class PayPalOrdersUsersMigration extends PayPalBaseMigration {
     }
     $row = parent::prepareRow($row);
 
-    $row->{'Name'} = _avoidExistingUserNames($row->{'Name'});
-
     // On initial import, if this email address already exists, just map to the
     // existing uid and don't allow it to be deleted.
     $existing_user = user_load_by_mail($row->{'From Email Address'});
@@ -143,15 +141,6 @@ class PayPalOrdersUsersMigration extends PayPalBaseMigration {
 
     return TRUE;
   }
-}
-
-// Helper function to alter the user name to avoid conflicts with existing names.
-function _avoidExistingUserNames($name) {
-    $user = user_load_by_name($name);
-    if ($user) {
-      return _avoidExistingUserNames($name . '_');
-    }
-    return $name;
 }
 
 class PayPalOrdersMigration extends PayPalBaseMigration {
