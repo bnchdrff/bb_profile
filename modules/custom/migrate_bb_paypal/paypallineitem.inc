@@ -89,7 +89,6 @@ abstract class PayPalOrdersLineItemsMigration extends PayPalBaseMigration {
     // the total with our price components
     $order = commerce_order_load($line_item->order_id);
     $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
-    dpm($line_item, 'line item in complete');
     $order_wrapper->commerce_line_items[] = $line_item;
     $order_wrapper->save();
   }
@@ -159,7 +158,6 @@ class PayPalOrdersLineItemsShippingMigration extends PayPalOrdersLineItemsMigrat
     if (is_array($line_item->order_id) && isset($line_item->order_id['destid1'])) {
       $line_item->order_id = $line_item->order_id['destid1'];
     }
-    dpm($line_item);
     $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
     $line_item_wrapper->commerce_shipping_service = $service;
 
@@ -170,7 +168,7 @@ class PayPalOrdersLineItemsShippingMigration extends PayPalOrdersLineItemsMigrat
       'currency_code' => $price->currency_code->value(),
       'data' => array(),
     );
-    $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add($base_price, 'base_price', $base_price, TRUE);
+    $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add($base_price, 'flat_rate_expedited_us', $base_price, TRUE);
 
   }
 }
