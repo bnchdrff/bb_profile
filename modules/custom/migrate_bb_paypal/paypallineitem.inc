@@ -24,7 +24,7 @@ abstract class PayPalOrdersLineItemsMigration extends PayPalBaseMigration {
     $this->addFieldMapping('type', null)->defaultValue($type);
     $this->addFieldMapping('created', 'Date');
     $this->addUnmigratedDestinations(array(
-      'order', // this is handled in the complete?
+      'order', // this is handled in the complete
       'commerce_unit_price:currency_code',
       'commerce_unit_price:tax_rate',
       'commerce_total:currency_code',
@@ -140,8 +140,8 @@ class PayPalOrdersLineItemsShippingMigration extends PayPalOrdersLineItemsMigrat
     $this->addFieldMapping('quantity', null)->defaultValue(1);
     $this->addFieldMapping('commerce_total', 'Shipping and Handling Amount');
     $this->addFieldMapping('commerce_product', null)->defaultValue(3);
-    $this->addFieldMapping('line_item_label', null)->defaultValue('Expedited US'); // TODO: determine 
     $this->addFieldMapping('commerce_unit_price', 'Shipping and Handling Amount');
+    $this->addUnmigratedDestinations(array('line_item_label'));
   }
 
   function prepareRow($row) {
@@ -153,22 +153,26 @@ class PayPalOrdersLineItemsShippingMigration extends PayPalOrdersLineItemsMigrat
   }
 
   function prepare($line_item, stdClass $row) {
-    $service = 'expedited_us'; // TODO: Determine service?
+    $price_component_type = 'flat_rate_expedited_us';
+    $service = 'expedited_us';
+    if ($row->{'Country'} != 'US') {
+      $price_component_type = 'flat_rate_expedited_intl';
+      $service = 'expedited_intl';
+    }
     $line_item->data['shipping_service'] = commerce_shipping_service_load($service);
     if (is_array($line_item->order_id) && isset($line_item->order_id['destid1'])) {
       $line_item->order_id = $line_item->order_id['destid1'];
     }
     $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
     $line_item_wrapper->commerce_shipping_service = $service;
-
-    // Add a base price component.
+    // Add the price component.
     $price = $line_item_wrapper->commerce_unit_price;
     $base_price = array(
       'amount' => $price->amount->value(),
       'currency_code' => $price->currency_code->value(),
       'data' => array(),
     );
-    $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add($base_price, 'flat_rate_expedited_us', $base_price, TRUE);
+    $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add($base_price, $price_component_type, $base_price, TRUE);
 
   }
 }
