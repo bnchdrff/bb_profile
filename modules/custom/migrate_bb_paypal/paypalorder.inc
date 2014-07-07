@@ -11,7 +11,7 @@ class PayPalOrdersMigration extends PayPalBaseMigration {
       array(
         'Transaction ID' => array(
           'type' => 'varchar',
-          'length' => 20,
+          'length' => 30,
           'not null' => TRUE,
           'description' => 'PayPal Transaction ID',
         ),
