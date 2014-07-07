@@ -80,6 +80,15 @@ abstract class PayPalOrdersCustomerProfilesMigration extends PayPalBaseMigration
       'postal_code' => $row->{'Zip/Postal Code'},
     );
   }
+  /**
+   * The customer profile needs to be deleted.
+   */
+  function completeRollback($profile_ids) {
+    foreach ($profile_ids as $profile_id) {
+      commerce_customer_profile_delete($profile_id);
+    }
+  }
+
 }
 
 class PayPalOrdersCustomerProfilesBillingMigration extends PayPalOrdersCustomerProfilesMigration {
