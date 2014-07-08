@@ -7,7 +7,7 @@ module.exports = function(grunt) {
           paths: ['less'],
           sourceMap: true,
           sourceMapFilename: 'css/style.map', // where file is generated and located
-          sourceMapBasepath: '/profiles/commerce_kickstart/themes/bb_theme/', // Sets sourcemap base path, defaults to current working directory.
+          sourceMapBasepath: 'css', // Sets sourcemap base path, defaults to current working directory.
         },
         files :{
           'css/style.css' : 'less/style.less',
