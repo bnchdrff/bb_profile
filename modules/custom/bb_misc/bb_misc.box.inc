@@ -19,7 +19,7 @@ function bb_misc_default_box() {
   $box->description = 'Logo';
   $box->options = array(
     'body' => array(
-      'value' => '<img src="/profiles/commerce_kickstart/themes/bb_theme/images/rsz_1balmlabelfrontdetroit.png" alt="Beard Balm" title="Beard Balm">',
+      'value' => '<a href="/"><img src="/profiles/commerce_kickstart/themes/bb_theme/images/rsz_1balmlabelfrontdetroit.png" alt="Beard Balm" title="Beard Balm"></a>',
       'format' => 'full_html',
     ),
     'additional_classes' => '',

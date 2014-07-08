@@ -467,6 +467,77 @@ function bb_misc_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'commerce_product-product-commerce_product_limit_max'
+  $field_instances['commerce_product-product-commerce_product_limit_max'] = array(
+    'bundle' => 'product',
+    'default_value' => array(
+      0 => 0,
+    ),
+    'deleted' => 0,
+    'description' => NULL,
+    'display' => array(
+      'add_to_cart_confirmation_view' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 5,
+      ),
+      'line_item' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'node_product_list' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'node_teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'product_in_cart' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'commerce_product',
+    'field_name' => 'commerce_product_limit_max',
+    'label' => 'Maximum order quantity',
+    'required' => TRUE,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 36,
+    ),
+  );
+
   // Exported field_instance: 'commerce_product-product-field_images'
   $field_instances['commerce_product-product-field_images'] = array(
     'bundle' => 'product',
@@ -930,6 +1001,7 @@ function bb_misc_field_default_field_instances() {
   t('Customs ID');
   t('Images');
   t('Is this order a gift?');
+  t('Maximum order quantity');
   t('Price');
   t('Prices');
   t('Product');

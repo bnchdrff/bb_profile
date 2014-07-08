@@ -498,6 +498,24 @@ function bb_misc_field_default_field_bases() {
     'type' => 'commerce_product_reference',
   );
 
+  // Exported field_base: 'commerce_product_limit_max'
+  $field_bases['commerce_product_limit_max'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(
+      0 => 'commerce_product',
+    ),
+    'field_name' => 'commerce_product_limit_max',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 1,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
   // Exported field_base: 'commerce_shipping_service'
   $field_bases['commerce_shipping_service'] = array(
     'active' => 1,

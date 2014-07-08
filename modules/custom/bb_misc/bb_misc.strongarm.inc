@@ -73,11 +73,7 @@ function bb_misc_strongarm() {
   $strongarm->value = 'checkout
 checkout/*
 cart
-cart/*
-faq
-instructions
-ingredients
-<front>';
+cart/*';
   $export['commerce_empty_cart_paths'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -195,6 +191,12 @@ ingredients
           ),
           'teaser' => array(
             'weight' => '1',
+            'visible' => TRUE,
+          ),
+        ),
+        'product:commerce_product_limit_max' => array(
+          'default' => array(
+            'weight' => '36',
             'visible' => TRUE,
           ),
         ),

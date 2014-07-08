@@ -50,12 +50,6 @@ function bb_misc_context_default_contexts() {
           'region' => 'sidebar_second',
           'weight' => '-20',
         ),
-        'commerce_cart-cart' => array(
-          'module' => 'commerce_cart',
-          'delta' => 'cart',
-          'region' => 'sidebar_second',
-          'weight' => '-19',
-        ),
       ),
     ),
   );
