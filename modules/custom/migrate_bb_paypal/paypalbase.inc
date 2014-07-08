@@ -42,8 +42,6 @@ abstract class PayPalBaseMigration extends Migration {
 
     $row->{'Country'} = _convert_country_name_to_country_code($row->{'Country'}); // TODO: make noise if this doesn't find a country.
 
-    $row->{'Name'} = mb_convert_encoding($row->{'Name'}, "UTF-8"); // properly encode special characters.
-
     // Covert row date to timestamp.
     $row->{'Date'} = strtotime($row->{'Date'} . ' ' . $row->{'Time'} . ' ' . $row->{'Time Zone'});
     return $row;
