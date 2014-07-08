@@ -4,7 +4,7 @@
 abstract class PayPalBaseMigration extends Migration {
   // A Migration constructor takes an array of arguments as its first parameter.
   // The arguments must be passed through to the parent constructor.
-  public function __construct($arguments) {
+  public function __construct(array $arguments) {
     parent::__construct($arguments);
 
     // using sheet1 from the "2012-2/6/2014" doc to test.
@@ -17,9 +17,13 @@ abstract class PayPalBaseMigration extends Migration {
   }
 
   public function skipRow($row) {
-    // Skip bank account withdraws.
+    // Skip any non 'Complete' transactions.
+    if ($row->{'Status'} != 'Completed') {
+      return TRUE;
+    }
+    // Skip bank account withdraws, refunds and others.
     if ($row->{'Type'} == 'Withdraw Funds to a Bank Account' ||
-        $row->{'Type'} == 'Refund' || // TODO: change orders that were refunded?
+        $row->{'Type'} == 'Refund' || // TODO: change orders that were refunded? No.
         $row->{'Type'} == 'Invoice Sent' || // has corresponding "Payment Received" row.
         $row->{'Type'} == 'Cancelled Fee') {
       return TRUE;
@@ -28,6 +32,9 @@ abstract class PayPalBaseMigration extends Migration {
   }
 
   public function prepareRow($row) {
+    if ($this->skipRow($row)) {
+      return FALSE;
+    }
     $existing_user = user_load_by_mail($row->{'From Email Address'});
     if ($existing_user->uid) {
       $row->uid = $existing_user->uid;
