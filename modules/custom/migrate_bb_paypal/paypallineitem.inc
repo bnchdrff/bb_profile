@@ -172,7 +172,7 @@ class PayPalOrdersLineItemsShippingMigration extends PayPalOrdersLineItemsMigrat
       'currency_code' => $price->currency_code->value(),
       'data' => array(),
     );
-    $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add($base_price, $price_component_type, $base_price, TRUE);
+    $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add($base_price, $price_component_type, $base_price, FALSE, FALSE);
 
   }
 }
