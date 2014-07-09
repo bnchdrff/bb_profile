@@ -116,7 +116,7 @@ if (!empty($logo) && !empty($site_name) && (!empty($primary_nav) || !empty($seco
 </header>
 <?php endif; ?>
 
-<div class="main-container container">
+<div class="main-container container-fluid">
 
   <header role="banner" id="page-header">
     <?php if (!empty($site_slogan)): ?>
@@ -129,7 +129,7 @@ if (!empty($logo) && !empty($site_name) && (!empty($primary_nav) || !empty($seco
   <div class="row">
 
     <?php if (!empty($page['sidebar_first'])): ?>
-      <aside class="col-sm-3" role="complementary">
+      <aside class="col-md-3" role="complementary">
         <?php print render($page['sidebar_first']); ?>
       </aside>  <!-- /#sidebar-first -->
     <?php endif; ?>
@@ -159,7 +159,7 @@ if (!empty($logo) && !empty($site_name) && (!empty($primary_nav) || !empty($seco
     </section>
 
     <?php if (!empty($page['sidebar_second'])): ?>
-      <aside class="col-sm-3" role="complementary">
+      <aside class="col-md-3" role="complementary">
         <?php print render($page['sidebar_second']); ?>
       </aside>  <!-- /#sidebar-second -->
     <?php endif; ?>
@@ -169,3 +169,4 @@ if (!empty($logo) && !empty($site_name) && (!empty($primary_nav) || !empty($seco
 <footer class="footer container">
   <?php print render($page['footer']); ?>
 </footer>
+<div id="dots"></div>

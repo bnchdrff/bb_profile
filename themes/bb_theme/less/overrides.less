@@ -131,7 +131,7 @@ body {
   margin-top: 45px;
   padding-top: 35px;
   padding-bottom: 36px;
-  border-top: 1px solid #E5E5E5;
+  border-top: none;
 }
 
 // Element invisible fix
@@ -649,3 +649,26 @@ table {
 .alert-danger a {
   color: darken(@alert-danger-text, 10%);
 }
+
+body {
+  background: url(../images/background.jpg);
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color: #f7f7f7;
+  overflow-x: hidden;
+}
+
+#dots {
+  background-image: url(../images/dots.png);
+  width: 100%;
+  min-height: 100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  opacity: 1;
+  z-index: -50;
+}
+
