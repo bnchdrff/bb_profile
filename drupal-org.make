@@ -107,12 +107,12 @@ projects[commerce_empty_cart_paths][download][branch] = "7.x-1.x"
 projects[commerce_express_checkout][download][type] = "git"
 projects[commerce_express_checkout][download][url] = "https://github.com/bnchdrff/commerce_express_checkout.git"
 projects[commerce_express_checkout][download][branch] = "7.x-1.x-quantity"
-projects[commerce_price_table][version] = 1.1
+projects[commerce_price_table][version] = 1.2
 projects[commerce_price_table][subdir] = "contrib"
 projects[commerce_stripe][download][type] = "git"
 projects[commerce_stripe][download][url] = "git://git.drupal.org/project/commerce_stripe.git"
 projects[commerce_stripe][download][branch] = "7.x-1.x"
-projects[commerce_price_table][version] = 1.0
+projects[computed_field][version] = 1.0
 projects[computed_field][subdir] = "contrib"
 
 projects[boxes][subdir] = "contrib"
