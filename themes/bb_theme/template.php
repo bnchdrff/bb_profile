@@ -54,4 +54,12 @@ function bb_theme_preprocess_page(&$variables) {
   }
 }
 
+/**
+ * Implements hook_commerce_express_checkout_path_to_js_alter().
+ *
+ * Use our special commerce_express_checkout js.
+ */
+function bb_theme_commerce_express_checkout_path_to_js_alter(&$path_to_js) {
+  $path_to_js = path_to_theme() . '/js/commerce_express_checkout.custom_qty.js';
+}
 
