@@ -153,6 +153,7 @@ features[variable][] = node_options_product_display
 features[variable][] = node_preview_product_display
 features[variable][] = node_submitted_page
 features[variable][] = node_submitted_product_display
+features[variable][] = theme_bb_theme_settings
 features[views_view][] = bb_orders
 features_exclude[dependencies][commerce_order] = commerce_order
 features_exclude[dependencies][commerce_tax] = commerce_tax
