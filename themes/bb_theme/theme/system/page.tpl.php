@@ -74,7 +74,7 @@
  */
 ?>
 <?php 
-if (!empty($logo) && !empty($site_name) && (!empty($primary_nav) || !empty($secondary_nav) || !empty($page['navigation']))): ?>
+if (!empty($logo) || !empty($site_name) && (!empty($primary_nav) || !empty($secondary_nav) || !empty($page['navigation']))): ?>
 <header id="navbar" role="banner" class="<?php print $navbar_classes; ?>">
   <div class="container">
     <div class="navbar-header">
