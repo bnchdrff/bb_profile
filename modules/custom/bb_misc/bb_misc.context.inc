@@ -38,18 +38,6 @@ function bb_misc_context_default_contexts() {
           'region' => 'content',
           'weight' => '-9',
         ),
-        'boxes-logo' => array(
-          'module' => 'boxes',
-          'delta' => 'logo',
-          'region' => 'sidebar_second',
-          'weight' => '-21',
-        ),
-        'system-main-menu' => array(
-          'module' => 'system',
-          'delta' => 'main-menu',
-          'region' => 'sidebar_second',
-          'weight' => '-20',
-        ),
       ),
     ),
   );

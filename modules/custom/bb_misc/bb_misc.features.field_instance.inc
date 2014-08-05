@@ -561,7 +561,7 @@ function bb_misc_field_default_field_instances() {
         'module' => 'image',
         'settings' => array(
           'image_link' => '',
-          'image_style' => 'product_full',
+          'image_style' => 'frontpage_full',
         ),
         'type' => 'image',
         'weight' => 1,
