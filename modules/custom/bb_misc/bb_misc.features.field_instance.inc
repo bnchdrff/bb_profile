@@ -172,6 +172,41 @@ function bb_misc_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'commerce_customer_profile-shipping-field_special_instructions'
+  $field_instances['commerce_customer_profile-shipping-field_special_instructions'] = array(
+    'bundle' => 'shipping',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => -9,
+      ),
+    ),
+    'entity_type' => 'commerce_customer_profile',
+    'fences_wrapper' => '',
+    'field_name' => 'field_special_instructions',
+    'label' => 'Special Instructions',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => -9,
+    ),
+  );
+
   // Exported field_instance: 'commerce_order-commerce_order-field_customs_id'
   $field_instances['commerce_order-commerce_order-field_customs_id'] = array(
     'bundle' => 'commerce_order',
@@ -558,12 +593,21 @@ function bb_misc_field_default_field_instances() {
       ),
       'default' => array(
         'label' => 'hidden',
-        'module' => 'image',
+        'module' => 'picture',
         'settings' => array(
+          'colorbox_settings' => array(
+            'colorbox_caption' => 'auto',
+            'colorbox_caption_custom' => '',
+            'colorbox_gallery' => 'post',
+            'colorbox_gallery_custom' => '',
+            'colorbox_group' => '',
+            'colorbox_multivalue_index' => NULL,
+          ),
+          'fallback_image_style' => 'thumbnail',
           'image_link' => '',
-          'image_style' => 'frontpage_full',
+          'picture_mapping' => 'fullwidth_breaks',
         ),
-        'type' => 'image',
+        'type' => 'picture',
         'weight' => 1,
       ),
       'line_item' => array(

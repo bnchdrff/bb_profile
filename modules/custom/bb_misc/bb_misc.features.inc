@@ -179,11 +179,20 @@ function bb_misc_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "boxes" && $api == "box") {
     return array("version" => "1");
   }
+  if ($module == "breakpoints" && $api == "default_breakpoint_group") {
+    return array("version" => "1");
+  }
+  if ($module == "breakpoints" && $api == "default_breakpoints") {
+    return array("version" => "1");
+  }
   if ($module == "context" && $api == "context") {
     return array("version" => "3");
   }
   if ($module == "field_group" && $api == "field_group") {
     return array("version" => "1");
+  }
+  if ($module == "picture" && $api == "default_picture_mapping") {
+    return array("version" => "2");
   }
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
@@ -195,6 +204,159 @@ function bb_misc_ctools_plugin_api($module = NULL, $api = NULL) {
  */
 function bb_misc_views_api($module = NULL, $api = NULL) {
   return array("api" => "3.0");
+}
+
+/**
+ * Implements hook_image_default_styles().
+ */
+function bb_misc_image_default_styles() {
+  $styles = array();
+
+  // Exported image style: frontpage_full.
+  $styles['frontpage_full'] = array(
+    'name' => 'frontpage_full',
+    'label' => 'Frontpage full',
+    'effects' => array(
+      2 => array(
+        'label' => 'Scale',
+        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => 800,
+          'height' => '',
+          'upscale' => 0,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  // Exported image style: fullwidthbreakpoints_theme_bb_theme_mobile_1x.
+  $styles['fullwidthbreakpoints_theme_bb_theme_mobile_1x'] = array(
+    'name' => 'fullwidthbreakpoints_theme_bb_theme_mobile_1x',
+    'label' => 'fullwidthbreakpoints_theme_bb_theme_mobile_1x',
+    'effects' => array(
+      3 => array(
+        'label' => 'Scale',
+        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => 682,
+          'height' => '',
+          'upscale' => 0,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  // Exported image style: fullwidthbreakpoints_theme_bb_theme_narrow_1x.
+  $styles['fullwidthbreakpoints_theme_bb_theme_narrow_1x'] = array(
+    'name' => 'fullwidthbreakpoints_theme_bb_theme_narrow_1x',
+    'label' => 'fullwidthbreakpoints_theme_bb_theme_narrow_1x',
+    'effects' => array(
+      4 => array(
+        'label' => 'Scale',
+        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => 906,
+          'height' => '',
+          'upscale' => 0,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  // Exported image style: fullwidthbreakpoints_theme_bb_theme_normal_1x.
+  $styles['fullwidthbreakpoints_theme_bb_theme_normal_1x'] = array(
+    'name' => 'fullwidthbreakpoints_theme_bb_theme_normal_1x',
+    'label' => 'fullwidthbreakpoints_theme_bb_theme_normal_1x',
+    'effects' => array(
+      5 => array(
+        'label' => 'Scale',
+        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => 1114,
+          'height' => '',
+          'upscale' => 0,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  // Exported image style: fullwidthbreakpoints_theme_bb_theme_wide_1x.
+  $styles['fullwidthbreakpoints_theme_bb_theme_wide_1x'] = array(
+    'name' => 'fullwidthbreakpoints_theme_bb_theme_wide_1x',
+    'label' => 'fullwidthbreakpoints_theme_bb_theme_wide_1x',
+    'effects' => array(
+      6 => array(
+        'label' => 'Scale',
+        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => 1114,
+          'height' => '',
+          'upscale' => 0,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  // Exported image style: product_full.
+  $styles['product_full'] = array(
+    'name' => 'product_full',
+    'label' => 'product_full',
+    'effects' => array(
+      1 => array(
+        'label' => 'Scale',
+        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => 1140,
+          'height' => '',
+          'upscale' => 0,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  return $styles;
 }
 
 /**

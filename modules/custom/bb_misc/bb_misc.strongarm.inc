@@ -294,7 +294,7 @@ cart/*';
   $strongarm->name = 'theme_bb_theme_settings';
   $strongarm->value = array(
     'toggle_logo' => 0,
-    'toggle_name' => 0,
+    'toggle_name' => 1,
     'toggle_slogan' => 0,
     'toggle_node_user_picture' => 1,
     'toggle_comment_user_picture' => 1,
