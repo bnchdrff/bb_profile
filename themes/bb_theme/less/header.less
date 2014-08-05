@@ -1,1 +1,44 @@
 // Insert your styling here.
+.navbar {
+  padding: 5px;
+}
+
+.navbar .container {
+  width: auto !important;
+  padding: 0 30px !important;
+  > .navbar-header {
+    margin-left: 0;
+    margin-right: 0;
+    .navbar-brand {
+      margin: 0;
+      text-indent: -666px;
+      overflow: hidden;
+      @media(max-width:767px) {
+        background: transparent url(../images/rsz_balmlabelfront3rings-50x50.png) no-repeat;
+        height: 50px;
+        width: 50px;
+      }
+      @media(min-width:768px) {
+        background: transparent url(../images/sideways-147x75.png) no-repeat;
+        height: 75px;
+        width: 147px;
+      }
+      @media(min-width:992px) {
+      }
+      @media(min-width:1200px) {
+      }
+    }
+  }
+  .menu {
+    li.first a {
+      padding-left: 30px;
+    }
+    @media(min-width:768px) {
+      font-size: 200%;
+      text-transform: uppercase;
+      font-weight: bold;
+      padding-top: 14px;
+    }
+  }
+}
+

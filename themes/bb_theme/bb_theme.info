@@ -43,7 +43,7 @@ stylesheets[all][] = css/style.css
 ; scripts[] = 'bootstrap/js/alert.js'
 ; scripts[] = 'bootstrap/js/button.js'
 ; scripts[] = 'bootstrap/js/carousel.js'
-; scripts[] = 'bootstrap/js/collapse.js'
+scripts[] = 'bootstrap/js/collapse.js'
 ; scripts[] = 'bootstrap/js/dropdown.js'
 ; scripts[] = 'bootstrap/js/modal.js'
 ; scripts[] = 'bootstrap/js/tooltip.js'
@@ -64,3 +64,9 @@ stylesheets[all][] = css/style.css
 ; is overrides to Bootstrap theme settings. Copy them here from the base theme
 ; to override.
 settings[bb_theme_bootstrap_cdn_js_only] = 1
+
+; Breakpoints
+breakpoints[wide] = (min-width: 1200px)
+breakpoints[normal] = (min-width: 992px)
+breakpoints[narrow] = (min-width: 768px)
+breakpoints[mobile] = (min-width: 0px)

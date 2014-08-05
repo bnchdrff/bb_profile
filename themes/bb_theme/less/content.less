@@ -1,5 +1,11 @@
 // Insert your styling here.
 .main-container {
+  @media(max-width:767px) {
+    margin-left: 15px;
+  }
+  @media(min-width:768px) {
+    margin-left: 10px;
+  }
   .well {
     border-radius: 0;
     background: white;
@@ -12,4 +18,30 @@ aside[role="complementary"] {
 
 .field-name-commerce-product-limit-max {
   display: none;
+}
+
+.commerce-product-field-field-images {
+  img {
+    max-width: 100%;
+  }
+}
+
+.qtl_ctl_widget {
+  a:link,
+  a:visited,
+  a:active,
+  a:hover {
+    text-decoration: none;
+  }
+}
+
+.page-checkout .main-container {
+  max-width: 768px;
+  #edit-commerce-payment-payment-details-credit-card-exp-month,
+  #form-item-commerce-payment-payment-details-credit-card-exp-year,
+  #edit-commerce-payment-payment-details-credit-card-exp-year,
+  #edit-commerce-payment-payment-details-credit-card-code {
+    display: inline;
+    width: 5em;
+  }
 }

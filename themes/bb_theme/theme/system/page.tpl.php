@@ -116,7 +116,7 @@ if (!empty($logo) || !empty($site_name) && (!empty($primary_nav) || !empty($seco
 </header>
 <?php endif; ?>
 
-<div class="main-container container-fluid">
+<div class="main-container container">
 
   <header role="banner" id="page-header">
     <?php if (!empty($site_slogan)): ?>
