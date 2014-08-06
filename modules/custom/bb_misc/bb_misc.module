@@ -66,3 +66,40 @@ function bb_misc_entity_presave($entity, $type) {
     }
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bb_misc_form_commerce_checkout_form_alter(&$form, &$form_state) {
+  // If this checkout form contains the payment method radios...
+  if (!empty($form['commerce_payment']['payment_method']['#options'])) {
+    // Loop over its options array looking for a PayPal WPS option.
+    foreach ($form['commerce_payment']['payment_method']['#options'] as $key => &$value) {
+      list($method_id, $rule_name) = explode('|', $key);
+
+      // If we find PayPal WPS...
+      if ($method_id == 'paypal_wps') {
+        // Prepare the replacement radio button text with icons.
+        $icons = commerce_paypal_icons();
+        $value = t('!logo PayPal', array('!logo' => $icons['paypal']));
+
+        // Remove the CSS.
+        unset($form['commerce_payment']['payment_method']['#attached']['css']);
+
+        break;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_commerce_checkout_page_info_alter().
+ *
+ * Re-label the next-step button.
+ */
+function bb_misc_commerce_checkout_page_info_alter(&$pages) {
+  if (!empty($pages['checkout'])) {
+    $pages['checkout']['submit_value'] = t('Complete order');
+  }
+}
+

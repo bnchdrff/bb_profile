@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_update_N().
+ *
+ * Ensure we come after commerce_paypal_wps.
+ */
+function bb_misc_update_7100() {
+    db_update('system')
+    ->fields(array('weight' => 10))
+    ->condition('name', 'bb_misc', '=')
+    ->execute();
+}
