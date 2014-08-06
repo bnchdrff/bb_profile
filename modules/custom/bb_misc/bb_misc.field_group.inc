@@ -21,20 +21,19 @@ function bb_misc_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Optional',
-    'weight' => '3',
+    'weight' => '10',
     'children' => array(
-      0 => 'field_special_instructions',
-      1 => 'field_gift_order',
+      0 => 'field_gift_order',
+      1 => 'field_special_instructions',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'label' => 'Optional',
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => 'group-customer-fields field-group-fieldset',
-        'description' => '',
-      ),
       'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-customer-fields field-group-fieldset',
+        'required_fields' => 1,
+      ),
     ),
   );
   $export['group_customer_fields|commerce_order|commerce_order|form'] = $field_group;

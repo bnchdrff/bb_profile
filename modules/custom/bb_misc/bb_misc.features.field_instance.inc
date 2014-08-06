@@ -245,7 +245,7 @@ function bb_misc_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => -1,
+      'weight' => 6,
     ),
   );
 
@@ -283,7 +283,7 @@ function bb_misc_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 5,
+      'weight' => 8,
     ),
   );
 
@@ -331,7 +331,7 @@ function bb_misc_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_text',
-      'weight' => 0,
+      'weight' => 7,
     ),
   );
 
@@ -366,7 +366,7 @@ function bb_misc_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 6,
+      'weight' => 9,
     ),
   );
 
@@ -404,7 +404,7 @@ function bb_misc_field_default_field_instances() {
       'module' => 'computed_field',
       'settings' => array(),
       'type' => 'computed',
-      'weight' => -2,
+      'weight' => 5,
     ),
   );
 
