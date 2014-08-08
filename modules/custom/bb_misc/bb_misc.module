@@ -103,3 +103,35 @@ function bb_misc_commerce_checkout_page_info_alter(&$pages) {
   }
 }
 
+/**
+ * Add shipping to an order.
+ *
+ * Used by express checkout.
+ * Via https://www.drupal.org/node/1387720#comment-7708361
+ */
+function bb_misc_commerce_express_checkout_pre_redirect_alter($order, $context) {
+  $service_name = $context['service_name'];
+
+  if (isset($service_name) && !isset($order->shipping_rates[$service_name])) {
+    // Make the chosen service available to the order.
+    commerce_shipping_service_rate_order($service_name, $order);
+  }
+  elseif (!isset($service_name)) {
+    if (empty($order->shipping_rates)) {
+      // No available rate.
+      return;
+    }
+    $service_name = key($order->shipping_rates);
+  }
+  // Delete any existing shipping line items from the order.
+  commerce_shipping_delete_shipping_line_items($order, TRUE);
+  // Extract the unit price from the calculated rate.
+  $rate_line_item = $order->shipping_rates[$service_name];
+  $rate_line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $rate_line_item);
+  $unit_price = $rate_line_item_wrapper->commerce_unit_price->value();
+  // Create a new shipping line item with the calculated rate from the form.
+  $line_item = commerce_shipping_line_item_new($service_name, $unit_price, $order->order_id, $rate_line_item->data, $rate_line_item->type);
+  // Save and add the line item to the order.
+  $new_line_item = commerce_shipping_add_shipping_line_item($line_item, $order, TRUE);
+  commerce_order_save($order);
+}
