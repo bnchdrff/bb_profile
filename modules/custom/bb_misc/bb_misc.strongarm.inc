@@ -69,6 +69,20 @@ function bb_misc_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'commerce_checkout_completion_message';
+  $strongarm->value = array(
+    'value' => 'Thanks for the order! You\'ll be getting an email receipt from us shortly and one more note when it ships.
+
+But what to do in the meantime? Maybe check our our <a href="http://instagram.com/beardbalm">Instagram</a> page, or our <a href="http://beardbalm.tumblr.com/">tumblr</a> blog.  Do you <a href="https://twitter.com/BeardBalm/">tweet</a>? Or maybe you\'re a <a href="https://www.facebook.com/BeardBalm">facebook</a> fan... We\'d love to connect with you!
+
+If you ever have any questions, problems or concerns, just write at admin@beardbalm.us',
+    'format' => 'filtered_html',
+  );
+  $export['commerce_checkout_completion_message'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'commerce_empty_cart_paths';
   $strongarm->value = 'checkout
 checkout/*
