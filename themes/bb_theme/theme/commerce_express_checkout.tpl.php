@@ -12,10 +12,10 @@
 ?>
 
 <?php if ($custom_qty): ?>
-<span class="qtl_ctl_widget">
-  <a class="increase_qty glyphicon glyphicon-arrow-up" href="#"></a>
-  <input class="qty_ctl" id="qty_ctl_<?php print $product_id; ?>" type="text" size="2" value="1" type="number" min="1" max="999" placeholder="Qty" />
+<span class="qty_ctl_widget">
   <a class="decrease_qty glyphicon glyphicon-arrow-down" href="#"></a>
+  <input class="qty_ctl" id="qty_ctl_<?php print $product_id; ?>" type="text" size="2" value="1" type="number" min="1" max="999" placeholder="Qty" />
+  <a class="increase_qty glyphicon glyphicon-arrow-up" href="#"></a>
 </span>
 <?php endif; ?>
 <a type="button" class="btn btn-default btn-lg commerce_express_checkout" href="/<?php print $path; ?>">ORDER</a>

@@ -30,11 +30,20 @@
     }
   }
   .menu {
-    li.first a {
-      padding-left: 30px;
+    > .active > a {
+      &,
+      &:hover,
+      &:focus {
+        color: @navbar-default-link-active-color;
+        background-color: transparent;
+      }
     }
+
     @media(min-width:768px) {
-      font-size: 200%;
+      li.first a {
+        margin-left: 15px;
+      }
+      font-size: 150%;
       text-transform: uppercase;
       font-weight: bold;
       padding-top: 14px;

@@ -7,11 +7,7 @@ Drupal.behaviors.cec_custom_qty = {
     var $qty_error = $('.qty_error', context);
     // this shouldn't live here!!! but there isn't an easy endpoint to ask afaik
     var price_check = function price_check(num_cans) {
-      if (num_cans < 2) {
-        return num_cans * 19;
-      } else {
-        return num_cans * 17;
-      }
+      return num_cans * 17 + 2;
     };
 
     var cb_context = {
@@ -28,10 +24,10 @@ Drupal.behaviors.cec_custom_qty = {
       if (ev.data.qty_ctl.value < 1) {
         ev.data.qty_ctl.value = 1;
       }
-      if (ev.data.qty_ctl.value == 5) {
-        ev.data.qty_error.innerHTML = 'If you want more than 5 cans, <a href="mailto:info@beardbalm.us">email us!</a>';
+      if (ev.data.qty_ctl.value == 4) {
+        ev.data.qty_error.innerHTML = 'If you want more than 4 cans, <a href="mailto:admin@beardbalm.us">email us!</a>';
       }
-      if (ev.data.qty_ctl.value < 5) {
+      if (ev.data.qty_ctl.value < 4) {
         ev.data.qty_error.innerHTML = '';
       }
       var $a = $(this).parent().parent().find('a.commerce_express_checkout').eq(0);
