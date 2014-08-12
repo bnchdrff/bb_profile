@@ -133,7 +133,6 @@ features[rules_config][] = commerce_checkout_bb_create_a_new_account_for_an_anon
 features[rules_config][] = commerce_checkout_completed_domestic_gift_order_notification
 features[rules_config][] = commerce_checkout_completed_domestic_normal_order_notification
 features[rules_config][] = commerce_checkout_intl_order_send_an_order_notification_email
-features[rules_config][] = commerce_checkout_order_email
 features[rules_config][] = commerce_flat_rate_services_standard_global_shipping
 features[rules_config][] = commerce_tax_rate_sample_michigan_sales_tax
 features[rules_config][] = rules_order_paid_in_full_order_state_to_processing

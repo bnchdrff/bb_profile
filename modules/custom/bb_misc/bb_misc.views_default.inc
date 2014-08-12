@@ -413,7 +413,7 @@ function bb_misc_views_default_views() {
     ),
     'created' => array(
       'sortable' => 1,
-      'default_sort_order' => 'asc',
+      'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -671,6 +671,7 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
   $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
   $handler->display->display_options['fields']['order_number']['label'] = 'ID';
+  $handler->display->display_options['fields']['order_number']['link_to_order'] = 'admin';
   /* Field: Commerce Order: Created date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'commerce_order';
@@ -786,6 +787,9 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'commerce_order';
   $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = array(
+    'processing' => 'processing',
+  );
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['exposed'] = TRUE;
   $handler->display->display_options['filters']['status']['expose']['operator_id'] = 'status_op';
@@ -793,6 +797,14 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
   $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
   $handler->display->display_options['filters']['status']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    5 => 0,
+    4 => 0,
+    6 => 0,
+  );
   /* Filter criterion: Date: Date (commerce_order) */
   $handler->display->display_options['filters']['date_filter']['id'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['table'] = 'commerce_order';
@@ -868,6 +880,12 @@ function bb_misc_views_default_views() {
   );
   $handler->display->display_options['filters']['type_1']['group'] = 2;
   $handler->display->display_options['path'] = 'admin/commerce/orders/fulfil_domestic';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Domestic fulfilment';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'management';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
 
   /* Display: Fulfillment: New international orders */
   $handler = $view->new_display('page', 'Fulfillment: New international orders', 'page_1');
@@ -1092,6 +1110,9 @@ function bb_misc_views_default_views() {
     2 => '2',
     1 => 0,
     3 => 0,
+    5 => 0,
+    4 => 0,
+    6 => 0,
   );
   $handler->display->display_options['filters']['status']['expose']['reduce'] = TRUE;
   /* Filter criterion: Date: Date (commerce_order) */
@@ -1156,6 +1177,12 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['filters']['quantity']['relationship'] = 'commerce_line_items_line_item_id';
   $handler->display->display_options['filters']['quantity']['value']['value'] = '1';
   $handler->display->display_options['path'] = 'admin/commerce/orders/fulfil_international';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'International fulfilment';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'management';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['bb_orders'] = $view;
 
   return $export;

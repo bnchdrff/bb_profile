@@ -17,7 +17,7 @@ function bb_misc_commerce_flat_rate_default_services() {
       'shipping_method' => 'flat_rate',
       'rules_component' => TRUE,
       'price_component' => 'flat_rate_standard_global_shipping',
-      'weight' => 0,
+      'weight' => 1,
       'callbacks' => array(
         'rate' => 'commerce_flat_rate_service_rate_order',
         'details_form' => 'standard_global_shipping_details_form',
