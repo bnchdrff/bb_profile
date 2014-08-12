@@ -18,6 +18,6 @@
   <a class="decrease_qty glyphicon glyphicon-arrow-down" href="#"></a>
 </span>
 <?php endif; ?>
-<a type="button" class="btn btn-default btn-md commerce_express_checkout" href="<?php print $path; ?>">ORDER</a>
+<a type="button" class="btn btn-default btn-lg commerce_express_checkout" href="/<?php print $path; ?>">ORDER</a>
 <span class="qty_delivered_wrap">Delivered for just $<span class="qty_delivered">19</span></span>
 <div class="qty_error"></div>
