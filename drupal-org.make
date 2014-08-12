@@ -228,6 +228,11 @@ projects[jquery_update][download][type] = "git"
 projects[jquery_update][download][url] = "git://git.drupal.org/project/jquery_update.git"
 projects[jquery_update][download][branch] = "7.x-2.x"
 
+projects[git_deploy][subdir] = "contrib"
+projects[git_deploy][download][type] = "git"
+projects[git_deploy][download][url] = "git://git.drupal.org/project/git_deploy.git"
+projects[git_deploy][download][branch] = "7.x-2.x"
+
 ; Internationalization
 projects[variable][version] = 2.3
 projects[variable][subdir] = "contrib"
