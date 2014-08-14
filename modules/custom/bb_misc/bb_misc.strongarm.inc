@@ -377,5 +377,19 @@ cart/*';
   );
   $export['theme_bb_theme_settings'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'user_mail_register_admin_created_notify';
+  $strongarm->value = '0';
+  $export['user_mail_register_admin_created_notify'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'user_register';
+  $strongarm->value = '0';
+  $export['user_register'] = $strongarm;
+
   return $export;
 }
