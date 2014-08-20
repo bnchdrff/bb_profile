@@ -178,7 +178,7 @@ function bb_misc_field_default_field_instances() {
     'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
-    'display' => array( 
+    'display' => array(
       'default' => array(
         'label' => 'above',
         'module' => 'text',

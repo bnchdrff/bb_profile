@@ -15,8 +15,8 @@ function bb_misc_default_rules_configuration() {
       "WEIGHT" : "2",
       "OWNER" : "rules",
       "TAGS" : [ "Commerce Checkout" ],
-      "REQUIRES" : [ "rules", "commerce", "commerce_checkout" ],
-      "ON" : { "commerce_checkout_complete" : [] },
+      "REQUIRES" : [ "rules", "commerce", "commerce_payment" ],
+      "ON" : { "commerce_payment_order_paid_in_full" : [] },
       "IF" : [
         { "data_is" : { "data" : [ "commerce-order:uid" ], "value" : "0" } },
         { "NOT entity_exists" : {
@@ -126,8 +126,8 @@ function bb_misc_default_rules_configuration() {
       "DO" : [
         { "mail" : {
             "to" : [ "commerce-order:mail" ],
-            "subject" : "Order [commerce-order:order-number] at [site:name]",
-            "message" : "Hi [commerce-order:commerce-customer-billing:commerce-customer-address:first_name], got you all packed up, will ship today!\\r\\n\\r\\n-Jon\\r\\n",
+            "subject" : "Your Beard Balm has shipped!",
+            "message" : "Hi [commerce-order:commerce-customer-billing:commerce-customer-address:first_name], got you all packed up, will ship today!\\r\\n\\r\\n-Jon\\r\\n\\r\\nPS: We\\u0027re just switching over our site and still working out some kinks, sorry for the wonky emails, feel free to write me directly if you have questions!",
             "language" : [ "" ]
           }
         }
@@ -155,8 +155,8 @@ function bb_misc_default_rules_configuration() {
       "DO" : [
         { "mail" : {
             "to" : [ "commerce-order:mail" ],
-            "subject" : "Order [commerce-order:order-number] at [site:name]",
-            "message" : "Hi [commerce-order:commerce-customer-billing:commerce-customer-address:first_name], your order will ship today from our fulfilment partner is Hong Kong via Sinagpore Post. Your customs number is [commerce-order:field-customs-id] and you can follow it\\u2019s progress at this site: http:\\/\\/www.17track.net\\/en\\/result\\/post.shtml?nums=[commerce-order:field-customs-id]\\r\\n\\r\\nIt will take a few days for your parcel to enter the system so don\\u2019t be surprised when you don\\u2019t see anything pop up on there right now. Your package is shipping out on a boat, so it may sit in the port for several days or longer. After it leaves Hong Kong, there will be no further updates until it reaches [commerce-order:commerce-customer-billing:commerce-customer-address:country]. At that point, a phone call to your post office is the best way to get your packages cleared through customs and delivered.\\r\\n\\r\\nPlease keep me posted! International shipping is a complex task and I\\u2019m always happy to know when packages arrive safely and to troubleshoot problems.\\r\\n\\r\\n-Jon",
+            "subject" : "Your Beard Balm has shipped!",
+            "message" : "Hi [commerce-order:commerce-customer-billing:commerce-customer-address:first_name], got you all packed up, will ship today!\\r\\n\\r\\n-Jon\\r\\n\\r\\nPS: We\\u0027re just switching over our site and still working out some kinks, sorry for the wonky emails, feel free to write me directly if you have questions!",
             "language" : [ "" ]
           }
         }
