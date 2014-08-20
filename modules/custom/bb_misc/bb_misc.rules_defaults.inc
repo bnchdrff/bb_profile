@@ -48,26 +48,6 @@ function bb_misc_default_rules_configuration() {
             },
             "PROVIDE" : { "entity_fetched" : { "account_fetched" : "Fetched account" } }
           }
-        },
-        { "LOOP" : {
-            "USING" : { "list" : [ "account-fetched" ] },
-            "ITEM" : { "list_item" : "Current list item" },
-            "DO" : [
-              { "mail" : {
-                  "to" : [ "commerce-order:mail" ],
-                  "subject" : "Order [commerce-order:order-number] at [site:name]",
-                  "message" : "Thanks for your order [commerce-order:order-number] at [site:name].\\r\\n\\r\\nIf this is your first order with us, see below for login instructions. You can view your order history with us at any time by logging into our website at:\\r\\n\\r\\n[site:login-url]\\r\\nThis link can only be used once to log in and will lead you to a page where you can set your password.\\r\\n\\r\\nAfter setting your password, you will be able to log in at [site:url]user in the future using:\\r\\nusername: [commerce-order:mail-username]\\r\\npassword: Your password\\r\\n\\r\\nYou can find the status of your current order at:\\r\\n[commerce-order:customer-url]\\r\\n\\r\\nPlease contact us if you have any questions about your order.\\r\\n\\r\\n-- Beard Balm team",
-                  "language" : [ "" ]
-                }
-              },
-              { "data_set" : { "data" : [ "commerce-order:uid" ], "value" : [ "list-item:uid" ] } },
-              { "data_set" : {
-                  "data" : [ "commerce-order:commerce-customer-billing:uid" ],
-                  "value" : [ "list-item:uid" ]
-                }
-              }
-            ]
-          }
         }
       ]
     }
