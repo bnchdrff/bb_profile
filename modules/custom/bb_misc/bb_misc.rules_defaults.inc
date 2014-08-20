@@ -170,6 +170,35 @@ function bb_misc_default_rules_configuration() {
       ]
     }
   }');
+  $items['rules_add_1_per_can'] = entity_import('rules_config', '{ "rules_add_1_per_can" : {
+      "LABEL" : "Add $1 per can",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "commerce_line_item", "commerce_shipping" ],
+      "ON" : { "commerce_shipping_calculate_rate" : [] },
+      "DO" : [
+        { "LOOP" : {
+            "USING" : { "list" : [ "commerce-line-item:order:commerce-line-items" ] },
+            "ITEM" : { "line_item" : "Line item" },
+            "DO" : [
+              { "data_calc" : {
+                  "USING" : { "input_1" : [ "line-item:quantity" ], "op" : "*", "input_2" : "100" },
+                  "PROVIDE" : { "result" : { "calculated_line_item_shipping" : "Calculated line item shipping" } }
+                }
+              },
+              { "commerce_line_item_unit_price_add" : {
+                  "commerce_line_item" : [ "commerce_line_item" ],
+                  "amount" : [ "calculated-line-item-shipping" ],
+                  "component_name" : "flat_rate_standard_global_shipping",
+                  "round_mode" : "1"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_order_paid_in_full_order_state_to_processing'] = entity_import('rules_config', '{ "rules_order_paid_in_full_order_state_to_processing" : {
       "LABEL" : "Order paid in full: Order state to processing",
       "PLUGIN" : "reaction rule",
