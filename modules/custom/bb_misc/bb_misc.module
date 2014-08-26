@@ -141,3 +141,13 @@ function bb_misc_commerce_express_checkout_pre_redirect_alter($order, $context) 
   $new_line_item = commerce_shipping_add_shipping_line_item($line_item, $order, TRUE);
   commerce_order_save($order);
 }
+
+function bb_misc_preprocess_html(&$vars) {
+  if (arg(0) == "admin") {
+    drupal_add_css(drupal_get_path('module', 'bb_misc') . '/bb_misc.admin-overrides.css', array(
+      'type' => 'file',
+      'weight' => CSS_THEME,
+      'preprocess' => FALSE,
+    ));
+  }
+}

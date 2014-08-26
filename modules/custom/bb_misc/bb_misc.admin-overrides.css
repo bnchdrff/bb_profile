@@ -1,0 +1,14 @@
+@media print {
+  #toolbar,
+  .page-title,
+  .views-field-views-bulk-operations,
+  .breadcrumb a,
+  .breadcrumb span,
+  input.vbo-table-select-all, input.vbo-select, td.checkbox input.form-checkbox,
+  #edit-select {
+    display: none !important;
+  }
+  .views-table {
+    font-size: 120%;
+  }
+}
