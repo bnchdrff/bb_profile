@@ -8,6 +8,7 @@
  * - $product_id: Product ID for which this checkout link is built.
  * - $path: Path to express checkout of product.
  * - $custom_qty: Whether or not to allow custom quantity.
+ * - $caption_txt: Text below button.
  */
 ?>
 
@@ -19,5 +20,5 @@
 </span>
 <?php endif; ?>
 <a type="button" class="btn btn-default btn-lg commerce_express_checkout" href="/<?php print $path; ?>">ORDER</a>
-<span class="qty_delivered_wrap">Delivered for just $<span class="qty_delivered">19</span></span>
+<span class="qty_delivered_wrap"><?php print $caption_txt; ?></span>
 <div class="qty_error"></div>

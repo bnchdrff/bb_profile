@@ -2,12 +2,12 @@
 
 Drupal.behaviors.cec_custom_qty = {
   attach: function(context, settings) {
+    'use strict'; // limit scope of eval()ed code
     var $qty_ctl = $('.qty_ctl', context);
     var $qty_delivered = $('.qty_delivered', context);
     var $qty_error = $('.qty_error', context);
-    // this shouldn't live here!!! but there isn't an easy endpoint to ask afaik
     var price_check = function price_check(num_cans) {
-      return num_cans * 17 + 2;
+      return eval($qty_delivered.data('calc'));
     };
 
     var cb_context = {
