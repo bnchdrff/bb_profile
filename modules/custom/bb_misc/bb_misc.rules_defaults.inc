@@ -10,7 +10,7 @@
 function bb_misc_default_rules_configuration() {
   $items = array();
   $items['commerce_checkout_bb_create_a_new_account_for_an_anonymous_order'] = entity_import('rules_config', '{ "commerce_checkout_bb_create_a_new_account_for_an_anonymous_order" : {
-      "LABEL" : "Create a new account for an anonymous order (cloned)",
+      "LABEL" : "Create a new account for an anonymous order (for paypal WPS)",
       "PLUGIN" : "reaction rule",
       "WEIGHT" : "2",
       "OWNER" : "rules",
@@ -47,6 +47,24 @@ function bb_misc_default_rules_configuration() {
               "limit" : 1
             },
             "PROVIDE" : { "entity_fetched" : { "account_fetched" : "Fetched account" } }
+          }
+        },
+        { "LOOP" : {
+            "USING" : { "list" : [ "account-fetched" ] },
+            "ITEM" : { "list_item" : "Current list item" },
+            "DO" : [
+              { "data_set" : { "data" : [ "commerce-order:uid" ], "value" : [ "list-item:uid" ] } },
+              { "data_set" : {
+                  "data" : [ "commerce-order:commerce-customer-billing:uid" ],
+                  "value" : [ "list-item:uid" ]
+                }
+              },
+              { "data_set" : {
+                  "data" : [ "commerce-order:commerce-customer-shipping:uid" ],
+                  "value" : [ "list-item:uid" ]
+                }
+              }
+            ]
           }
         }
       ]

@@ -12,7 +12,7 @@ function bb_misc_commerce_flat_rate_default_services() {
     'standard_global_shipping' => array(
       'name' => 'standard_global_shipping',
       'base' => 'standard_global_shipping',
-      'display_title' => 'Shipping',
+      'display_title' => 'Global Flat Rate S&H',
       'description' => 'edit description!',
       'shipping_method' => 'flat_rate',
       'rules_component' => TRUE,
