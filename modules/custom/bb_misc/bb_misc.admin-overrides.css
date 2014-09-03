@@ -11,4 +11,12 @@
   .views-table {
     font-size: 120%;
   }
+  .page-admin-commerce-orders-fulfil-international tbody td:nth-child(3),
+  .page-admin-commerce-orders-fulfil-international th:nth-child(3),
+  .page-admin-commerce-orders-fulfil-international .views-field-created {
+    display: none !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    text-indent: -666em !important;
+  }
 }
