@@ -69,6 +69,8 @@ function bb_misc_entity_presave($entity, $type) {
 
 /**
  * Implements hook_form_FORM_ID_alter().
+ *
+ * Change order of payment methods and hide Paypal ads.
  */
 function bb_misc_form_commerce_checkout_form_alter(&$form, &$form_state) {
   // If this checkout form contains the payment method radios...
@@ -96,6 +98,55 @@ function bb_misc_form_commerce_checkout_form_alter(&$form, &$form_state) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Include email in order "Owned by" autocomplete.
+ */
+function bb_misc_form_commerce_order_order_form_alter(&$form, &$form_state) {
+  $form['user']['name']['#autocomplete_path'] = 'user/autocomplete_bb_misc';
+}
+
+/**
+ * Implements hook_menu().
+ *
+ * Provide autocomplete path for user search.
+ */
+function bb_misc_menu() {
+  $items = array(
+    'user/autocomplete_bb_misc' => array(
+      'page callback' => '_bb_misc_autocomplete_user',
+      'theme callback' => 'ajax_base_page_theme',
+      'access callback' => 'user_access',
+      'access arguments' => array('administer users'),
+      'type' => MENU_CALLBACK,
+    ),
+  );
+  return $items;
+}
+
+/**
+ * Menu callback; AJAX autocomplete by user name + mail.
+ */
+function _bb_misc_autocomplete_user($string = '') {
+ $matches = array();
+  if ($string) {
+    $match_name_or_mail = db_or()
+                            ->condition('name', db_like($string) . '%', 'LIKE')
+                            ->condition('mail', db_like($string) . '%', 'LIKE');
+    $result = db_select('users')
+                ->fields('users', array('name', 'mail'))
+                ->condition($match_name_or_mail)
+                ->range(0, 10)
+                ->execute();
+    foreach ($result as $user) {
+      $matches[$user->name] = check_plain($user->name) . ' (' . $user->mail . ')';
+    }
+  }
+
+  drupal_json_output($matches);
 }
 
 /**
