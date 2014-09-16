@@ -5,7 +5,6 @@ package = Features
 version = 7.x-0.1
 project = bb_misc
 dependencies[] = addressfield
-dependencies[] = bb_misc
 dependencies[] = boxes
 dependencies[] = commerce
 dependencies[] = commerce_cart

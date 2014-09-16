@@ -1061,7 +1061,7 @@ function bb_misc_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'commerce_express_checkout',
         'settings' => array(
-          'caption_txt' => 'Special World Beard Day sale, just $<span data-calc="(num_cans * 9.95).toFixed(2)" class="qty_delivered">9.95</span>, save 38% for a limited time only!',
+          'caption_txt' => 'Get Beard Balm for $<span data-calc="(num_cans * 16).toFixed(2)" class="qty_delivered">16</span>!',
           'custom_qty' => 1,
         ),
         'type' => 'commerce_express_checkout_express_checkout_link',
