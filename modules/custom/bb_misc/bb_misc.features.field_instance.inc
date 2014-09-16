@@ -942,6 +942,55 @@ function bb_misc_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-page-field_files'
+  $field_instances['node-page-field_files'] = array(
+    'bundle' => 'page',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 1,
+      ),
+      'product_list' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'fences_wrapper' => '',
+    'field_name' => 'field_files',
+    'label' => 'Files',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 0,
+      'file_directory' => 'page-files',
+      'file_extensions' => 'png gif jpg jpeg tif tiff',
+      'max_filesize' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
+      'weight' => 32,
+    ),
+  );
+
   // Exported field_instance: 'node-product_display-body'
   $field_instances['node-product_display-body'] = array(
     'bundle' => 'product_display',
@@ -1115,6 +1164,7 @@ function bb_misc_field_default_field_instances() {
   t('Amazon transaction ID');
   t('Body');
   t('Customs ID');
+  t('Files');
   t('Images');
   t('Is this order a gift?');
   t('Maximum order quantity');
