@@ -177,6 +177,7 @@ features[variable][] = comment_product_display
 features[variable][] = comment_subject_field_product_display
 features[variable][] = commerce_checkout_completion_message
 features[variable][] = commerce_empty_cart_paths
+features[variable][] = field_bundle_settings_node__page
 features[variable][] = field_bundle_settings_node__product_display
 features[variable][] = jquery_update_compression_type
 features[variable][] = jquery_update_jquery_admin_version

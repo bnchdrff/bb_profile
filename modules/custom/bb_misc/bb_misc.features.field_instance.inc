@@ -179,6 +179,13 @@ function bb_misc_field_default_field_instances() {
     'deleted' => 0,
     'description' => '',
     'display' => array(
+      'administrator' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => -9,
+      ),
       'default' => array(
         'label' => 'above',
         'module' => 'text',
