@@ -46,6 +46,7 @@ dependencies[] = system
 dependencies[] = text
 dependencies[] = title
 dependencies[] = views
+dependencies[] = views_data_export
 dependencies[] = views_megarow
 features[box][] = logo
 features[breakpoint_group][] = bb_theme

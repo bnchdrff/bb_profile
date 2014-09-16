@@ -1436,6 +1436,138 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['menu']['name'] = 'management';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Fulfillment export: New international orders */
+  $handler = $view->new_display('views_data_export', 'Fulfillment export: New international orders', 'views_data_export_1');
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_csv';
+  $handler->display->display_options['style_options']['provide_file'] = 1;
+  $handler->display->display_options['style_options']['filename'] = 'international_orders-%timestamp-full.csv';
+  $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['style_options']['quote'] = 1;
+  $handler->display->display_options['style_options']['trim'] = 0;
+  $handler->display->display_options['style_options']['replace_newlines'] = 0;
+  $handler->display->display_options['style_options']['header'] = 1;
+  $handler->display->display_options['style_options']['keep_html'] = 0;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Commerce Order: Referenced customer profile */
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['id'] = 'commerce_customer_billing_profile_id';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['table'] = 'field_data_commerce_customer_billing';
+  $handler->display->display_options['relationships']['commerce_customer_billing_profile_id']['field'] = 'commerce_customer_billing_profile_id';
+  /* Relationship: Commerce Order: Owner */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'commerce_order';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: Commerce Order: Referenced customer profile */
+  $handler->display->display_options['relationships']['commerce_customer_shipping_profile_id']['id'] = 'commerce_customer_shipping_profile_id';
+  $handler->display->display_options['relationships']['commerce_customer_shipping_profile_id']['table'] = 'field_data_commerce_customer_shipping';
+  $handler->display->display_options['relationships']['commerce_customer_shipping_profile_id']['field'] = 'commerce_customer_shipping_profile_id';
+  /* Relationship: Commerce Order: Representative payment transaction */
+  $handler->display->display_options['relationships']['payment_transaction_representative']['id'] = 'payment_transaction_representative';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['table'] = 'commerce_order';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['field'] = 'payment_transaction_representative';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['subquery_sort'] = 'commerce_payment_transaction.transaction_id';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['subquery_order'] = 'ASC';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['subquery_view'] = '';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['subquery_namespace'] = '';
+  /* Relationship: Commerce Order: Referenced line items */
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['id'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['table'] = 'field_data_commerce_line_items';
+  $handler->display->display_options['relationships']['commerce_line_items_line_item_id']['field'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Commerce Order: Order number */
+  $handler->display->display_options['fields']['order_number']['id'] = 'order_number';
+  $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
+  $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
+  $handler->display->display_options['fields']['order_number']['label'] = 'ID';
+  /* Field: Commerce Customer profile: Address - Full name */
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['id'] = 'commerce_customer_address_name_line';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['table'] = 'field_data_commerce_customer_address';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['field'] = 'commerce_customer_address_name_line';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['relationship'] = 'commerce_customer_shipping_profile_id';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['label'] = 'Name';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['element_type'] = '0';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['commerce_customer_address_name_line']['element_default_classes'] = FALSE;
+  /* Field: Commerce Customer profile: Address */
+  $handler->display->display_options['fields']['commerce_customer_address']['id'] = 'commerce_customer_address';
+  $handler->display->display_options['fields']['commerce_customer_address']['table'] = 'field_data_commerce_customer_address';
+  $handler->display->display_options['fields']['commerce_customer_address']['field'] = 'commerce_customer_address';
+  $handler->display->display_options['fields']['commerce_customer_address']['relationship'] = 'commerce_customer_shipping_profile_id';
+  $handler->display->display_options['fields']['commerce_customer_address']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['commerce_customer_address']['alter']['text'] = '[commerce_customer_address-organisation_name] [commerce_customer_address-thoroughfare] [commerce_customer_address-premise] [commerce_customer_address-sub_premise] [commerce_customer_address-locality] [commerce_customer_address-dependent_locality] [commerce_customer_address-administrative_area] [commerce_customer_address-sub_administrative_area] [commerce_customer_address-postal_code]';
+  $handler->display->display_options['fields']['commerce_customer_address']['click_sort_column'] = 'country';
+  $handler->display->display_options['fields']['commerce_customer_address']['settings'] = array(
+    'use_widget_handlers' => 1,
+    'format_handlers' => array(
+      'address' => 'address',
+    ),
+  );
+  /* Field: Commerce Customer profile: Address - Country */
+  $handler->display->display_options['fields']['commerce_customer_address_country']['id'] = 'commerce_customer_address_country';
+  $handler->display->display_options['fields']['commerce_customer_address_country']['table'] = 'field_data_commerce_customer_address';
+  $handler->display->display_options['fields']['commerce_customer_address_country']['field'] = 'commerce_customer_address_country';
+  $handler->display->display_options['fields']['commerce_customer_address_country']['relationship'] = 'commerce_customer_billing_profile_id';
+  $handler->display->display_options['fields']['commerce_customer_address_country']['label'] = 'Country';
+  $handler->display->display_options['fields']['commerce_customer_address_country']['element_type'] = '0';
+  $handler->display->display_options['fields']['commerce_customer_address_country']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['commerce_customer_address_country']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['commerce_customer_address_country']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['commerce_customer_address_country']['display_name'] = 1;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Commerce Order: Order status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'commerce_order';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = array(
+    'processing' => 'processing',
+  );
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = 'status_op';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Filter by';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['multiple'] = TRUE;
+  /* Filter criterion: Commerce Customer profile: Address - Country */
+  $handler->display->display_options['filters']['commerce_customer_address_country']['id'] = 'commerce_customer_address_country';
+  $handler->display->display_options['filters']['commerce_customer_address_country']['table'] = 'field_data_commerce_customer_address';
+  $handler->display->display_options['filters']['commerce_customer_address_country']['field'] = 'commerce_customer_address_country';
+  $handler->display->display_options['filters']['commerce_customer_address_country']['relationship'] = 'commerce_customer_shipping_profile_id';
+  $handler->display->display_options['filters']['commerce_customer_address_country']['operator'] = 'not in';
+  $handler->display->display_options['filters']['commerce_customer_address_country']['value'] = array(
+    'US' => 'US',
+  );
+  $handler->display->display_options['filters']['commerce_customer_address_country']['group'] = 1;
+  /* Filter criterion: Commerce Line Item: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'commerce_line_item';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['relationship'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'product' => 'product',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Commerce Line Item: Quantity */
+  $handler->display->display_options['filters']['quantity_1']['id'] = 'quantity_1';
+  $handler->display->display_options['filters']['quantity_1']['table'] = 'commerce_line_item';
+  $handler->display->display_options['filters']['quantity_1']['field'] = 'quantity';
+  $handler->display->display_options['filters']['quantity_1']['relationship'] = 'commerce_line_items_line_item_id';
+  $handler->display->display_options['filters']['quantity_1']['operator'] = '<=';
+  $handler->display->display_options['filters']['quantity_1']['value']['value'] = '2';
+  $handler->display->display_options['filters']['quantity_1']['group'] = 1;
+  $handler->display->display_options['filters']['quantity_1']['expose']['operator_id'] = 'quantity_1_op';
+  $handler->display->display_options['filters']['quantity_1']['expose']['label'] = 'Quantity';
+  $handler->display->display_options['filters']['quantity_1']['expose']['operator'] = 'quantity_1_op';
+  $handler->display->display_options['filters']['quantity_1']['expose']['identifier'] = 'quantity_1';
+  $handler->display->display_options['path'] = 'admin/commerce/orders/fulfil_international/download';
+  $handler->display->display_options['displays'] = array(
+    'page_1' => 'page_1',
+    'default' => 0,
+    'admin_page' => 0,
+    'fulfil_domestic' => 0,
+  );
   $export['bb_orders'] = $view;
 
   return $export;
