@@ -989,13 +989,17 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Created';
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'Name/Email';
-  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
+  /* Field: Raw SQL: Raw field */
+  $handler->display->display_options['fields']['raw_field']['id'] = 'raw_field';
+  $handler->display->display_options['fields']['raw_field']['table'] = 'views_raw_sql';
+  $handler->display->display_options['fields']['raw_field']['field'] = 'raw_field';
+  $handler->display->display_options['fields']['raw_field']['label'] = 'Total orders, inclusive';
+  $handler->display->display_options['fields']['raw_field']['raw_sql'] = '(SELECT (SELECT COUNT(order_id) FROM {commerce_order} WHERE status = \'completed\' AND uid = commerce_order_uid) + 1)';
+  /* Field: Commerce Order: Order status */
+  $handler->display->display_options['fields']['status']['id'] = 'status';
+  $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
+  $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['label'] = 'Status';
   /* Field: Commerce Line Item: Quantity */
   $handler->display->display_options['fields']['quantity']['id'] = 'quantity';
   $handler->display->display_options['fields']['quantity']['table'] = 'commerce_line_item';
@@ -1003,6 +1007,13 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['fields']['quantity']['relationship'] = 'commerce_line_items_line_item_id';
   $handler->display->display_options['fields']['quantity']['label'] = '# of Cans';
   $handler->display->display_options['fields']['quantity']['precision'] = '0';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Name/Email';
+  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
   /* Field: Commerce Customer profile: Address - Country */
   $handler->display->display_options['fields']['commerce_customer_address_country']['id'] = 'commerce_customer_address_country';
   $handler->display->display_options['fields']['commerce_customer_address_country']['table'] = 'field_data_commerce_customer_address';
@@ -1015,20 +1026,6 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['fields']['commerce_customer_address_country']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['commerce_customer_address_country']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['commerce_customer_address_country']['display_name'] = 1;
-  /* Field: Commerce Order: Total Orders */
-  $handler->display->display_options['fields']['field_total_orders']['id'] = 'field_total_orders';
-  $handler->display->display_options['fields']['field_total_orders']['table'] = 'field_data_field_total_orders';
-  $handler->display->display_options['fields']['field_total_orders']['field'] = 'field_total_orders';
-  $handler->display->display_options['fields']['field_total_orders']['label'] = '# of Previous Orders';
-  $handler->display->display_options['fields']['field_total_orders']['element_type'] = '0';
-  $handler->display->display_options['fields']['field_total_orders']['element_wrapper_type'] = '0';
-  $handler->display->display_options['fields']['field_total_orders']['element_default_classes'] = FALSE;
-  $handler->display->display_options['fields']['field_total_orders']['field_api_classes'] = TRUE;
-  /* Field: Commerce Order: Order status */
-  $handler->display->display_options['fields']['status']['id'] = 'status';
-  $handler->display->display_options['fields']['status']['table'] = 'commerce_order';
-  $handler->display->display_options['fields']['status']['field'] = 'status';
-  $handler->display->display_options['fields']['status']['label'] = 'Status';
   /* Field: Commerce Order: Shipping information */
   $handler->display->display_options['fields']['commerce_customer_shipping']['id'] = 'commerce_customer_shipping';
   $handler->display->display_options['fields']['commerce_customer_shipping']['table'] = 'field_data_commerce_customer_shipping';
