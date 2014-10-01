@@ -5,6 +5,27 @@
  */
 
 /**
+ * Implements hook_default_commerce_discount().
+ */
+function bb_misc_default_commerce_discount() {
+  $items = array();
+  $items['discount_test'] = entity_import('commerce_discount', '{
+    "name" : "discount_test",
+    "label" : "test",
+    "type" : "order_discount",
+    "status" : "1",
+    "component_title" : "test name",
+    "commerce_discount_date" : [],
+    "commerce_discount_offer" : {
+      "type" : "percentage",
+      "commerce_percentage" : { "und" : [ { "value" : "100.00" } ] }
+    },
+    "inline_conditions" : []
+  }');
+  return $items;
+}
+
+/**
  * Implements hook_commerce_flat_rate_default_services().
  */
 function bb_misc_commerce_flat_rate_default_services() {
