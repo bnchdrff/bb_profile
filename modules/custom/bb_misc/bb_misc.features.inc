@@ -13,8 +13,8 @@ function bb_misc_default_commerce_discount() {
     "name" : "discount_test",
     "label" : "test",
     "type" : "order_discount",
-    "status" : "1",
     "component_title" : "test name",
+    "export_status" : "1",
     "commerce_discount_date" : [],
     "commerce_discount_offer" : {
       "type" : "percentage",

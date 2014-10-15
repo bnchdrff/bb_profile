@@ -68,6 +68,16 @@ function bb_misc_user_default_permissions() {
     'module' => 'bb_misc',
   );
 
+  // Exported permission: 'redeem any coupon'.
+  $permissions['redeem any coupon'] = array(
+    'name' => 'redeem any coupon',
+    'roles' => array(
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'commerce_coupon',
+  );
+
   // Exported permission: 'view any commerce_order entity'.
   $permissions['view any commerce_order entity'] = array(
     'name' => 'view any commerce_order entity',
