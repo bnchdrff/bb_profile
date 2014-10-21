@@ -217,6 +217,28 @@ function bb_misc_default_rules_configuration() {
       ]
     }
   }');
+  $items['rules_notify_admin_on_order_cancellation'] = entity_import('rules_config', '{ "rules_notify_admin_on_order_cancellation" : {
+      "LABEL" : "Notify admin on order cancellation",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "entity" ],
+      "ON" : { "commerce_order_update" : [] },
+      "IF" : [
+        { "data_is" : { "data" : [ "commerce-order:status" ], "value" : "canceled" } },
+        { "NOT data_is" : { "data" : [ "commerce-order-unchanged:status" ], "value" : "canceled" } }
+      ],
+      "DO" : [
+        { "mail" : {
+            "to" : "[site:mail]",
+            "subject" : "Order [commerce-order:order-id] cancelled",
+            "message" : "Order [commerce-order:order-id] was cancelled: [commerce-order:admin-url]",
+            "from" : "[site:mail]",
+            "language" : [ "" ]
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_order_paid_in_full_order_state_to_processing'] = entity_import('rules_config', '{ "rules_order_paid_in_full_order_state_to_processing" : {
       "LABEL" : "Order paid in full: Order state to processing",
       "PLUGIN" : "reaction rule",
@@ -229,6 +251,24 @@ function bb_misc_default_rules_configuration() {
       ],
       "DO" : [
         { "commerce_order_update_status" : { "commerce_order" : [ "commerce_order" ], "order_status" : "processing" } }
+      ]
+    }
+  }');
+  $items['rules_set_paid_in_full_for_no_payment_order'] = entity_import('rules_config', '{ "rules_set_paid_in_full_for_no_payment_order" : {
+      "LABEL" : "set paid in full for no payment order",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "php", "commerce_checkout" ],
+      "ON" : { "commerce_checkout_complete" : [] },
+      "IF" : [
+        { "data_is" : {
+            "data" : [ "commerce-order:commerce-order-total:amount" ],
+            "value" : "0"
+          }
+        }
+      ],
+      "DO" : [
+        { "php_eval" : { "code" : "$payment_method = commerce_payment_method_instance_load(\\u0027commerce_payment_example|commerce_payment_commerce_payment_example\\u0027);\\r\\n\\r\\n\\/\\/ Creating new transaction via commerce_payment_example module.\\r\\n$charge = $commerce_order-\\u003Ecommerce_order_total[\\u0027und\\u0027][0];\\r\\n\\r\\n$transaction = commerce_payment_transaction_new(\\u0027commerce_payment_example\\u0027, $commerce_order-\\u003Eorder_id);\\r\\n$transaction-\\u003Einstance_id = $payment_method[\\u0027instance_id\\u0027];\\r\\n$transaction-\\u003Eamount = $charge[\\u0027amount\\u0027];\\r\\n$transaction-\\u003Ecurrency_code = $charge[\\u0027currency_code\\u0027];\\r\\n$transaction-\\u003Estatus = COMMERCE_PAYMENT_STATUS_SUCCESS;\\r\\n$transaction-\\u003Emessage = \\u0027Name: @name\\u0027;\\r\\n$transaction-\\u003Emessage_variables = array(\\u0027@name\\u0027 =\\u003E \\u0027Example payment\\u0027);\\r\\n\\r\\ncommerce_payment_transaction_save($transaction);\\r\\n\\r\\ndsm($transaction);\\r\\n\\r\\ncommerce_payment_commerce_payment_transaction_insert($transaction);\\r\\n\\r\\n\\/\\/ this would mark it as shipped:\\r\\n\\/\\/commerce_order_status_update($commerce_order, \\u0027completed\\u0027);" } }
       ]
     }
   }');
