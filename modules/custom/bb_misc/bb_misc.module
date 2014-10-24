@@ -202,3 +202,7 @@ function bb_misc_preprocess_html(&$vars) {
     ));
   }
 }
+
+function bb_misc_commerce_coupon_add_coupon_ajax_alter(&$commands, $form, $form_state) {
+  $commands[] = ajax_command_replace('#edit-commerce-payment', drupal_render($form['commerce_payment']));
+}

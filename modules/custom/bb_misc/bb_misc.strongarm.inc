@@ -270,6 +270,30 @@ cart/*';
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'locale_custom_disabled_strings_en';
+  $strongarm->value = array();
+  $export['locale_custom_disabled_strings_en'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'locale_custom_strings_en';
+  $strongarm->value = array(
+    '' => array(
+      'Add coupon' => 'Insert',
+      'Completed' => 'Shipped',
+      'Coupon Code' => 'Token',
+      'Processing' => 'Ship now',
+      'The coupon you have entered has already been applied to your order' => 'Your token is singular',
+      'Unable to redeem coupon.' => 'Your token is lost.',
+      'Your coupon code is not valid.' => 'Your token is lost.',
+    ),
+  );
+  $export['locale_custom_strings_en'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_product_display';
   $strongarm->value = array(
     0 => 'main-menu',
