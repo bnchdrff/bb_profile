@@ -761,13 +761,13 @@ function bb_misc_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_prices'
-  $field_bases['field_prices'] = array(
+  // Exported field_base: 'field_price_table'
+  $field_bases['field_price_table'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_prices',
+    'field_name' => 'field_price_table',
     'foreign keys' => array(),
     'indexes' => array(
       'currency_price_table' => array(

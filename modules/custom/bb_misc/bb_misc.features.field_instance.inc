@@ -746,8 +746,8 @@ function bb_misc_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'commerce_product-product-field_prices'
-  $field_instances['commerce_product-product-field_prices'] = array(
+  // Exported field_instance: 'commerce_product-product-field_price_table'
+  $field_instances['commerce_product-product-field_price_table'] = array(
     'bundle' => 'product',
     'default_value' => NULL,
     'deleted' => 0,
@@ -769,7 +769,7 @@ function bb_misc_field_default_field_instances() {
           'table_orientation' => 'Orientation',
         ),
         'type' => 'commerce_multiprice_default',
-        'weight' => 3,
+        'weight' => 6,
       ),
       'line_item' => array(
         'label' => 'above',
@@ -777,29 +777,11 @@ function bb_misc_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
-      'node_product_list' => array(
-        'label' => 'above',
-        'module' => 'commerce_price_table',
-        'settings' => array(
-          'calculation' => FALSE,
-          'price_label' => 'Price',
-          'quantity_label' => 'Quantity',
-          'table_orientation' => 'Orientation',
-        ),
-        'type' => 'commerce_multiprice_default',
-        'weight' => 3,
-      ),
       'node_teaser' => array(
         'label' => 'above',
-        'module' => 'commerce_price_table',
-        'settings' => array(
-          'calculation' => FALSE,
-          'price_label' => 'Price',
-          'quantity_label' => 'Quantity',
-          'table_orientation' => 'Orientation',
-        ),
-        'type' => 'commerce_multiprice_default',
-        'weight' => 1,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'product_in_cart' => array(
         'label' => 'above',
@@ -810,8 +792,8 @@ function bb_misc_field_default_field_instances() {
     ),
     'entity_type' => 'commerce_product',
     'fences_wrapper' => '',
-    'field_name' => 'field_prices',
-    'label' => 'Prices',
+    'field_name' => 'field_price_table',
+    'label' => 'Price table',
     'required' => 0,
     'settings' => array(
       'commerce_price_table' => array(
@@ -826,7 +808,7 @@ function bb_misc_field_default_field_instances() {
         'currency_code' => 'default',
       ),
       'type' => 'commerce_price_table_multiple',
-      'weight' => 3,
+      'weight' => 37,
     ),
   );
 
@@ -1061,7 +1043,7 @@ function bb_misc_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'commerce_express_checkout',
         'settings' => array(
-          'caption_txt' => 'Get Beard Balm for $<span data-calc="(num_cans * 16).toFixed(0)" class="qty_delivered">16</span>!',
+          'caption_txt' => 'Get Beard Balm for $<span data-calc="((num_cans < 12) ? (num_cans * 16) : (num_cans * 8.25)).toFixed(0)" class="qty_delivered">99</span>!',
           'custom_qty' => 1,
         ),
         'type' => 'commerce_express_checkout_express_checkout_link',
@@ -1177,7 +1159,7 @@ function bb_misc_field_default_field_instances() {
   t('Maximum order quantity');
   t('PayPal transaction ID');
   t('Price');
-  t('Prices');
+  t('Price table');
   t('Product');
   t('Shipped');
   t('Special Instructions');
