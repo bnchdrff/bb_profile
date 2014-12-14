@@ -182,6 +182,7 @@ function bb_misc_default_rules_configuration() {
   $items['rules_add_1_per_can'] = entity_import('rules_config', '{ "rules_add_1_per_can" : {
       "LABEL" : "Add $1 per can",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "REQUIRES" : [ "rules", "commerce_line_item", "commerce_shipping" ],
       "ON" : { "commerce_shipping_calculate_rate" : [] },
