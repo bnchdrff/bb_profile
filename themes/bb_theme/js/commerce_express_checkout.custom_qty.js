@@ -47,6 +47,9 @@ Drupal.behaviors.cec_custom_qty = {
       ev.data.qty_ctl.value = parseInt(ev.data.qty_ctl.value) - 12;
       $(this).siblings('input.qty_ctl').click();
     });
+
+    // set default qty
+    $qty_ctl.val(12).click();
   }
 };
 
