@@ -154,7 +154,7 @@ function bb_misc_default_rules_configuration() {
         { "mail" : {
             "to" : [ "commerce-order:mail" ],
             "subject" : "Your Beard Balm has shipped!",
-            "message" : "Hi [commerce-order:commerce-customer-billing:commerce-customer-address:first_name], got you all packed up, will ship today!\\r\\n\\r\\n-Jon\\r\\n\\r\\nPS: We\\u0027re just switching over our site and still working out some kinks, sorry for the wonky emails, feel free to write me directly if you have questions!",
+            "message" : "Hi [commerce-order:commerce-customer-billing:commerce-customer-address:first_name], got you all packed up, will ship today!\\r\\n\\r\\nTrack your shipment: http:\\/\\/www.17track.net\\/en\\/result\\/post.shtml?nums=[commerce-order:field-customs-id]\\r\\n\\r\\n-Jon\\r\\n\\r\\nPS: We\\u0027re just switching over our site and still working out some kinks, sorry for the wonky emails, feel free to write me directly if you have questions!",
             "language" : [ "" ]
           }
         }
@@ -165,7 +165,7 @@ function bb_misc_default_rules_configuration() {
       "LABEL" : "Calculate Sample Michigan Sales Tax 6%",
       "PLUGIN" : "rule",
       "OWNER" : "rules",
-      "REQUIRES" : [ "commerce_order", "commerce_tax" ],
+      "REQUIRES" : [ "commerce_order" ],
       "USES VARIABLES" : { "commerce_line_item" : { "label" : "Line item", "type" : "commerce_line_item" } },
       "IF" : [
         { "commerce_order_compare_address" : {
@@ -176,16 +176,7 @@ function bb_misc_default_rules_configuration() {
           }
         }
       ],
-      "DO" : [
-        { "commerce_tax_rate_apply" : {
-            "USING" : {
-              "commerce_line_item" : [ "commerce-line-item" ],
-              "tax_rate_name" : "sample_michigan_sales_tax"
-            },
-            "PROVIDE" : { "applied_tax" : { "applied_tax" : "Applied tax" } }
-          }
-        }
-      ]
+      "DO" : []
     }
   }');
   $items['rules_add_1_per_can'] = entity_import('rules_config', '{ "rules_add_1_per_can" : {
@@ -257,6 +248,7 @@ function bb_misc_default_rules_configuration() {
   $items['rules_set_paid_in_full_for_no_payment_order'] = entity_import('rules_config', '{ "rules_set_paid_in_full_for_no_payment_order" : {
       "LABEL" : "set paid in full for no payment order",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "REQUIRES" : [ "rules", "php", "commerce_checkout" ],
       "ON" : { "commerce_checkout_complete" : [] },
@@ -268,7 +260,7 @@ function bb_misc_default_rules_configuration() {
         }
       ],
       "DO" : [
-        { "php_eval" : { "code" : "$payment_method = commerce_payment_method_instance_load(\\u0027commerce_payment_example|commerce_payment_commerce_payment_example\\u0027);\\r\\n\\r\\n\\/\\/ Creating new transaction via commerce_payment_example module.\\r\\n$charge = $commerce_order-\\u003Ecommerce_order_total[\\u0027und\\u0027][0];\\r\\n\\r\\n$transaction = commerce_payment_transaction_new(\\u0027commerce_payment_example\\u0027, $commerce_order-\\u003Eorder_id);\\r\\n$transaction-\\u003Einstance_id = $payment_method[\\u0027instance_id\\u0027];\\r\\n$transaction-\\u003Eamount = $charge[\\u0027amount\\u0027];\\r\\n$transaction-\\u003Ecurrency_code = $charge[\\u0027currency_code\\u0027];\\r\\n$transaction-\\u003Estatus = COMMERCE_PAYMENT_STATUS_SUCCESS;\\r\\n$transaction-\\u003Emessage = \\u0027Name: @name\\u0027;\\r\\n$transaction-\\u003Emessage_variables = array(\\u0027@name\\u0027 =\\u003E \\u0027Example payment\\u0027);\\r\\n\\r\\ncommerce_payment_transaction_save($transaction);\\r\\n\\r\\ndsm($transaction);\\r\\n\\r\\ncommerce_payment_commerce_payment_transaction_insert($transaction);\\r\\n\\r\\n\\/\\/ this would mark it as shipped:\\r\\n\\/\\/commerce_order_status_update($commerce_order, \\u0027completed\\u0027);" } }
+        { "php_eval" : { "code" : "$payment_method = commerce_payment_method_instance_load(\\u0027commerce_payment_example|commerce_payment_commerce_payment_example\\u0027);\\r\\n\\r\\n\\/\\/ Creating new transaction via commerce_payment_example module.\\r\\n$charge = $commerce_order-\\u003Ecommerce_order_total[\\u0027und\\u0027][0];\\r\\n\\r\\n$transaction = commerce_payment_transaction_new(\\u0027commerce_payment_example\\u0027, $commerce_order-\\u003Eorder_id);\\r\\n$transaction-\\u003Einstance_id = $payment_method[\\u0027instance_id\\u0027];\\r\\n$transaction-\\u003Eamount = $charge[\\u0027amount\\u0027];\\r\\n$transaction-\\u003Ecurrency_code = $charge[\\u0027currency_code\\u0027];\\r\\n$transaction-\\u003Estatus = COMMERCE_PAYMENT_STATUS_SUCCESS;\\r\\n$transaction-\\u003Emessage = \\u0027Name: @name\\u0027;\\r\\n$transaction-\\u003Emessage_variables = array(\\u0027@name\\u0027 =\\u003E \\u0027Example payment\\u0027);\\r\\n\\r\\ncommerce_payment_transaction_save($transaction);\\r\\n\\r\\ncommerce_payment_commerce_payment_transaction_insert($transaction);\\r\\n\\r\\n\\/\\/ this would mark it as shipped:\\r\\n\\/\\/commerce_order_status_update($commerce_order, \\u0027completed\\u0027);" } }
       ]
     }
   }');
