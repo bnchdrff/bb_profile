@@ -21,13 +21,13 @@ Drupal.behaviors.cec_custom_qty = {
       if (ev.data.qty_ctl.value > ev.data.max_qty) {
         ev.data.qty_ctl.value = ev.data.max_qty;
       }
-      if (ev.data.qty_ctl.value < 1) {
-        ev.data.qty_ctl.value = 1;
+      if (ev.data.qty_ctl.value < 12) {
+        ev.data.qty_ctl.value = 12;
       }
-      if (ev.data.qty_ctl.value == 4) {
-        ev.data.qty_error.innerHTML = 'If you want more than 4 cans, <a href="mailto:admin@beardbalm.us">email us!</a>';
+      if (ev.data.qty_ctl.value == ev.data.max_qty) {
+        ev.data.qty_error.innerHTML = 'If you want more than ' + ev.data.max_qty + ' cans, <a href="mailto:admin@beardbalm.us">email us!</a>';
       }
-      if (ev.data.qty_ctl.value < 4) {
+      if (ev.data.qty_ctl.value < ev.data.max_qty) {
         ev.data.qty_error.innerHTML = '';
       }
       var $a = $(this).parent().parent().find('a.commerce_express_checkout').eq(0);
@@ -38,13 +38,13 @@ Drupal.behaviors.cec_custom_qty = {
 
     $('a.increase_qty', context).on('click', null, cb_context, function(ev) {
       ev.preventDefault();
-      ev.data.qty_ctl.value++;
+      ev.data.qty_ctl.value = parseInt(ev.data.qty_ctl.value) + 12;
       $(this).siblings('input.qty_ctl').click();
     });
 
     $('a.decrease_qty', context).on('click', null, cb_context, function(ev) {
       ev.preventDefault();
-      ev.data.qty_ctl.value--;
+      ev.data.qty_ctl.value = parseInt(ev.data.qty_ctl.value) - 12;
       $(this).siblings('input.qty_ctl').click();
     });
   }
