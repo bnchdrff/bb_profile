@@ -18,16 +18,16 @@ Drupal.behaviors.cec_custom_qty = {
     };
 
     $qty_ctl.on('keydown keyup click input submit mouseenter', null, cb_context, function(ev) {
-      if (ev.data.qty_ctl.value > ev.data.max_qty) {
+      if (parseInt(ev.data.qty_ctl.value) > ev.data.max_qty) {
         ev.data.qty_ctl.value = ev.data.max_qty;
       }
-      if (ev.data.qty_ctl.value < 12) {
+      if (parseInt(ev.data.qty_ctl.value) < 12) {
         ev.data.qty_ctl.value = 12;
       }
-      if (ev.data.qty_ctl.value == ev.data.max_qty) {
+      if (parseInt(ev.data.qty_ctl.value) == ev.data.max_qty) {
         ev.data.qty_error.innerHTML = 'If you want more than ' + ev.data.max_qty + ' cans, <a href="mailto:admin@beardbalm.us">email us!</a>';
       }
-      if (ev.data.qty_ctl.value < ev.data.max_qty) {
+      if (parseInt(ev.data.qty_ctl.value) < ev.data.max_qty) {
         ev.data.qty_error.innerHTML = '';
       }
       var $a = $(this).parent().parent().find('a.commerce_express_checkout').eq(0);
