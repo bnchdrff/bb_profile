@@ -285,6 +285,23 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Commerce Order: Owner */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'commerce_order';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: Commerce Order: Representative payment transaction */
+  $handler->display->display_options['relationships']['payment_transaction_representative']['id'] = 'payment_transaction_representative';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['table'] = 'commerce_order';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['field'] = 'payment_transaction_representative';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['subquery_sort'] = 'commerce_payment_transaction.transaction_id';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['subquery_order'] = 'ASC';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['subquery_view'] = '';
+  $handler->display->display_options['relationships']['payment_transaction_representative']['subquery_namespace'] = '';
+  /* Relationship: Commerce Order: Referenced customer profile */
+  $handler->display->display_options['relationships']['commerce_customer_shipping_profile_id']['id'] = 'commerce_customer_shipping_profile_id';
+  $handler->display->display_options['relationships']['commerce_customer_shipping_profile_id']['table'] = 'field_data_commerce_customer_shipping';
+  $handler->display->display_options['relationships']['commerce_customer_shipping_profile_id']['field'] = 'commerce_customer_shipping_profile_id';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: Commerce Order */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
@@ -489,6 +506,17 @@ function bb_misc_views_default_views() {
   $handler->display->display_options['fields']['payment_method']['table'] = 'commerce_payment_transaction';
   $handler->display->display_options['fields']['payment_method']['field'] = 'payment_method';
   $handler->display->display_options['fields']['payment_method']['relationship'] = 'payment_transaction_representative';
+  /* Field: Field: Special Instructions */
+  $handler->display->display_options['fields']['field_special_instructions']['id'] = 'field_special_instructions';
+  $handler->display->display_options['fields']['field_special_instructions']['table'] = 'field_data_field_special_instructions';
+  $handler->display->display_options['fields']['field_special_instructions']['field'] = 'field_special_instructions';
+  $handler->display->display_options['fields']['field_special_instructions']['relationship'] = 'commerce_customer_shipping_profile_id';
+  $handler->display->display_options['fields']['field_special_instructions']['label'] = 'Special shipping Instructions';
+  $handler->display->display_options['fields']['field_special_instructions']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_special_instructions']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_special_instructions']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_special_instructions']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_special_instructions']['field_api_classes'] = TRUE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Commerce Order: Updated date */
   $handler->display->display_options['sorts']['changed']['id'] = 'changed';
@@ -561,6 +589,36 @@ function bb_misc_views_default_views() {
     1 => array(),
     2 => array(),
     3 => array(),
+  );
+  /* Filter criterion: Field: Special Instructions (field_special_instructions) */
+  $handler->display->display_options['filters']['field_special_instructions_value']['id'] = 'field_special_instructions_value';
+  $handler->display->display_options['filters']['field_special_instructions_value']['table'] = 'field_data_field_special_instructions';
+  $handler->display->display_options['filters']['field_special_instructions_value']['field'] = 'field_special_instructions_value';
+  $handler->display->display_options['filters']['field_special_instructions_value']['relationship'] = 'commerce_customer_shipping_profile_id';
+  $handler->display->display_options['filters']['field_special_instructions_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_special_instructions_value']['expose']['operator_id'] = 'field_special_instructions_value_op';
+  $handler->display->display_options['filters']['field_special_instructions_value']['expose']['label'] = 'Special Instructions (field_special_instructions)';
+  $handler->display->display_options['filters']['field_special_instructions_value']['expose']['operator'] = 'field_special_instructions_value_op';
+  $handler->display->display_options['filters']['field_special_instructions_value']['expose']['identifier'] = 'field_special_instructions_value';
+  $handler->display->display_options['filters']['field_special_instructions_value']['is_grouped'] = TRUE;
+  $handler->display->display_options['filters']['field_special_instructions_value']['group_info']['label'] = 'Special Instructions (field_special_instructions)';
+  $handler->display->display_options['filters']['field_special_instructions_value']['group_info']['identifier'] = 'field_special_instructions_value';
+  $handler->display->display_options['filters']['field_special_instructions_value']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => 'Is empty',
+      'operator' => 'empty',
+      'value' => 'Is empty',
+    ),
+    2 => array(
+      'title' => 'Isn\'t empty',
+      'operator' => 'not empty',
+      'value' => 'Isn\'t empty',
+    ),
+    3 => array(
+      'title' => '',
+      'operator' => '=',
+      'value' => '',
+    ),
   );
   $handler->display->display_options['path'] = 'admin/commerce/orders/list';
   $handler->display->display_options['menu']['type'] = 'default tab';
@@ -1522,6 +1580,33 @@ function bb_misc_views_default_views() {
     'completed' => 'completed',
   );
   $handler->display->display_options['path'] = 'admin/commerce/orders/coupons';
+
+  /* Display: Special Instructions Sorter */
+  $handler = $view->new_display('page', 'Special Instructions Sorter', 'page_3');
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Commerce Order: Order number */
+  $handler->display->display_options['fields']['order_number']['id'] = 'order_number';
+  $handler->display->display_options['fields']['order_number']['table'] = 'commerce_order';
+  $handler->display->display_options['fields']['order_number']['field'] = 'order_number';
+  $handler->display->display_options['fields']['order_number']['label'] = 'ID';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Name/Email';
+  /* Field: Commerce Order: Created date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'commerce_order';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Created';
+  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  /* Field: User: E-mail */
+  $handler->display->display_options['fields']['mail']['id'] = 'mail';
+  $handler->display->display_options['fields']['mail']['table'] = 'users';
+  $handler->display->display_options['fields']['mail']['field'] = 'mail';
+  $handler->display->display_options['fields']['mail']['relationship'] = 'uid';
+  $handler->display->display_options['path'] = 'admin/commerce/specialinst';
   $export['bb_orders'] = $view;
 
   return $export;
